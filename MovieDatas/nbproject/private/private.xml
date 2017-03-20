@@ -3,18 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/anthony/NetBeansProjects/MovieDatas/src/moviedatas/View/MovieListView.java</file>
-            <file>file:/Users/anthony/NetBeansProjects/MovieDatas/src/moviedatas/MovieDatas.java</file>
-            <file>file:/Users/anthony/NetBeansProjects/MovieDatas/src/moviedatas/Controller/SortPanelController.java</file>
-            <file>file:/Users/anthony/NetBeansProjects/MovieDatas/src/moviedatas/Controller/MovieInfoController.java</file>
-            <file>file:/Users/anthony/NetBeansProjects/MovieDatas/src/moviedatas/Controller/MovieListController.java</file>
-            <file>file:/Users/anthony/NetBeansProjects/MovieDatas/src/moviedatas/View/SortPanelView.java</file>
-            <file>file:/Users/anthony/NetBeansProjects/MovieDatas/src/moviedatas/View/MovieInfoView.java</file>
-            <file>file:/Users/anthony/NetBeansProjects/MovieDatas/src/moviedatas/View/FilterPanelView.java</file>
-            <file>file:/Users/anthony/NetBeansProjects/MovieDatas/src/moviedatas/Model/Movie.java</file>
-            <file>file:/Users/anthony/NetBeansProjects/MovieDatas/src/moviedatas/Model/MovieMember.java</file>
-            <file>file:/Users/anthony/NetBeansProjects/MovieDatas/src/moviedatas/Model/FilterController.java</file>
-            <file>file:/Users/anthony/NetBeansProjects/MovieDatas/src/moviedatas/Controller/FilterPanelController.java</file>
+            <file>file:/Users/anthony/NetBeansProjects/EPF_Projet_java_open_data/MovieDatas/src/moviedatas/MovieDatas.java</file>
         </group>
     </open-files>
 </project-private>
