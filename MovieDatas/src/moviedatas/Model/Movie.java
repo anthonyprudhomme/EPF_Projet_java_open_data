@@ -1,8 +1,8 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+* To change this license header, choose License Headers in Project Properties.
+* To change this template file, choose Tools | Templates
+* and open the template in the editor.
+*/
 package moviedatas.Model;
 
 import java.util.ArrayList;
@@ -19,15 +19,15 @@ public class Movie {
     Director director;
     ArrayList<Actor> actors;
     double score;
-    int gross;
-    int budget;
+    long gross;
+    long budget;
     String country;
     String language;
     boolean colored;
     String linkToInformation;
     ArrayList<String> plotKeywords;
     
-    public Movie(String title, int releaseYear, String genre, int duration, Director director, ArrayList<Actor> actors, double score, int gross, int budget, String country, String language, boolean colored, String linkToInformation, ArrayList<String> plotKeywords) {
+    public Movie(String title, int releaseYear, String genre, int duration, Director director, ArrayList<Actor> actors, double score, long gross, long budget, String country, String language, boolean colored, String linkToInformation, ArrayList<String> plotKeywords) {
         this.title = title;
         this.releaseYear = releaseYear;
         this.genre = genre;
@@ -43,60 +43,68 @@ public class Movie {
         this.linkToInformation = linkToInformation;
         this.plotKeywords = plotKeywords;
     }
-
+    
     public String getTitle() {
         return title;
     }
-
+    
     public int getReleaseYear() {
         return releaseYear;
     }
-
+    
     public String getGenre() {
         return genre;
     }
-
+    
     public int getDuration() {
         return duration;
     }
-
+    
     public Director getDirector() {
         return director;
     }
-
+    
     public ArrayList<Actor> getActors() {
         return actors;
     }
-
+    
     public double getScore() {
         return score;
     }
-
-    public int getGross() {
+    
+    public long getGross() {
         return gross;
     }
-
-    public int getBudget() {
+    
+    public long getBudget() {
         return budget;
     }
-
+    
     public String getCountry() {
         return country;
     }
-
+    
     public String getLanguage() {
         return language;
     }
-
+    
     public boolean isColored() {
         return colored;
     }
-
+    
     public String getLinkToInformation() {
         return linkToInformation;
     }
-
+    
     public ArrayList<String> getPlotKeywords() {
         return plotKeywords;
+    }
+    
+    @Override
+    public String toString(){
+        return this.title + " "+ this.releaseYear + " "+ this.genre + " "+this.duration + " "+
+                this.director + " "+ this.actors + " "+ this.score + " "+
+                this.gross + " "+ this.budget + " " + this.country + " "+this.language+ " "+ this.colored + " "+
+                this.linkToInformation + " "+ this.plotKeywords;
     }
 }

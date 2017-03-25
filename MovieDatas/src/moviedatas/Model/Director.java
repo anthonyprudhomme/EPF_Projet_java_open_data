@@ -5,10 +5,16 @@
  */
 package moviedatas.Model;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author anthony
  */
-public class Director {
+public class Director extends MovieMember{
+    
+    public Director(String name, int fbLikes, ArrayList<Movie> movies) {
+        super(name, fbLikes, movies);
+    }
     
 }

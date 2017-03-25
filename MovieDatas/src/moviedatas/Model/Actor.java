@@ -11,10 +11,18 @@ import java.util.ArrayList;
  *
  * @author anthony
  */
-public class Actor extends MovieMember {
+public class Actor extends MovieMember implements Comparable{
+    
+    public static ArrayList<Actor> actors;
     
     public Actor(String name, int fbLikes, ArrayList<Movie> movies) {
         super(name, fbLikes, movies);
     }
+
+    @Override
+    public int compareTo(Object o) {
+        return this.name.compareTo(((Actor)o).getName());
+    }
     
+    //public static void updateActorList(String name, int fbLikes, Movie movie)
 }

@@ -3,18 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package moviedatas.Model;
-
-import java.util.ArrayList;
+package moviedatas;
 
 /**
  *
  * @author anthony
  */
-class FilterController {
-
-    static void size(int i, ArrayList<Movie> sortByTitle) {
-        
+public class Log {
+    public static void e(Object message){
+        System.out.println(message);
     }
-    
 }

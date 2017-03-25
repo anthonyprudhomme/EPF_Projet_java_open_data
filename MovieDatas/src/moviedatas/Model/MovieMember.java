@@ -34,4 +34,8 @@ public abstract class MovieMember {
     public ArrayList<Movie> getMovies() {
         return movies;
     }
+    
+    public void addMovieToList(Movie movieToAdd){
+        this.movies.add(movieToAdd);
+    }
 }

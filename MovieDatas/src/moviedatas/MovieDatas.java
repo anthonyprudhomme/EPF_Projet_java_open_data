@@ -20,6 +20,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import moviedatas.Controller.MovieListController;
+import moviedatas.Model.Movie;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
@@ -34,39 +36,21 @@ public class MovieDatas {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws FileNotFoundException, IOException {
-        System.out.println("Hello world");
-        String everything;
-        BufferedReader br = new BufferedReader(new FileReader("./src/moviedatas/MovieDatas.json"));
-        try {
-            StringBuilder sb = new StringBuilder();
-            String line = br.readLine();
-
-            while (line != null) {
-                sb.append(line);
-                sb.append(System.lineSeparator());
-                line = br.readLine();
-            }
-            everything = sb.toString();
-        } finally {
-            br.close();
-        }
+    public static void main(String[] args) {
         
-        JSONArray movieDatas = (JSONArray) JSONValue.parse(everything);
-        JSONObject movie = (JSONObject) movieDatas.get(1);
-        System.out.println(movie);
-        System.out.println(movie.get("movie_title"));
+        MovieListController movieListController = new MovieListController();
+        movieListController.initMovies();
+        ArrayList<Movie> movies = movieListController.getMovies();
         //1. Create the frame.
-        JFrame frame = new JFrame("FrameDemo");
+        JFrame frame = new JFrame("Harp-e Movies Open Datas");
 
         //2. Optional: What happens when the frame closes?
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        JLabel myLabel = new JLabel(movie.get("movie_title").toString());
         ArrayList<JLabel> labels = new ArrayList();
         JPanel moviePanel = new JPanel();
         moviePanel.setLayout(new BoxLayout(moviePanel, BoxLayout.PAGE_AXIS));
-        for (int i = 0; i < movieDatas.size(); i++) {
-            labels.add(new JLabel(((JSONObject) movieDatas.get(i)).get("movie_title").toString()));
+        for (int i = 0; i < movies.size(); i++) {
+            labels.add(new JLabel( movies.get(i).getTitle()));
             moviePanel.add(labels.get(i));
         }
         JScrollPane scrollPanel = new JScrollPane(moviePanel);
@@ -82,8 +66,7 @@ public class MovieDatas {
         frame.setVisible(true); 
         //ArrayList<Movie> movies = new ArrayList<>();
         //FilterController.filter(10,SortController.byTitle(movies));
-            
-            
+    
     }
 
 }
