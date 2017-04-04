@@ -14,10 +14,10 @@ import java.util.ArrayList;
 public class Movie {
     String title;
     int releaseYear;
-    String genre;
+    ArrayList<String> genres;
     int duration;
-    Director director;
-    ArrayList<Actor> actors;
+    int directorId;
+    ArrayList<Integer> actorsId;
     double score;
     long gross;
     long budget;
@@ -26,14 +26,15 @@ public class Movie {
     boolean colored;
     String linkToInformation;
     ArrayList<String> plotKeywords;
+    int fbLikes;
     
-    public Movie(String title, int releaseYear, String genre, int duration, Director director, ArrayList<Actor> actors, double score, long gross, long budget, String country, String language, boolean colored, String linkToInformation, ArrayList<String> plotKeywords) {
+    public Movie(String title, int releaseYear, ArrayList<String> genres, int duration, int directorId, ArrayList<Integer> actorsId, double score, long gross, long budget, String country, String language, boolean colored, String linkToInformation, ArrayList<String> plotKeywords,int fbLikes) {
         this.title = title;
         this.releaseYear = releaseYear;
-        this.genre = genre;
+        this.genres = genres;
         this.duration = duration;
-        this.director = director;
-        this.actors = actors;
+        this.directorId = directorId;
+        this.actorsId = actorsId;
         this.score = score;
         this.gross = gross;
         this.budget = budget;
@@ -42,6 +43,7 @@ public class Movie {
         this.colored = colored;
         this.linkToInformation = linkToInformation;
         this.plotKeywords = plotKeywords;
+        this.fbLikes = fbLikes;
     }
     
     public String getTitle() {
@@ -52,59 +54,76 @@ public class Movie {
         return releaseYear;
     }
     
-    public String getGenre() {
-        return genre;
+    public ArrayList<String> getGenres() {
+        return this.genres;
     }
     
     public int getDuration() {
-        return duration;
+        return this.duration;
     }
     
-    public Director getDirector() {
-        return director;
+    private int getDirectorId() {
+        return this.directorId;
     }
     
-    public ArrayList<Actor> getActors() {
+    private ArrayList<Integer> getActorsId() {
+        return this.actorsId;
+    }
+    
+    public ArrayList<Actor> getActors(){
+        // 
+        ArrayList<Actor> actors = new ArrayList<>();
+        for (int i = 0; i < this.actorsId.size(); i++) {
+            actors.add(Actor.actors.get(this.actorsId.get(i)));
+        }
         return actors;
     }
     
     public double getScore() {
-        return score;
+        return this.score;
     }
     
     public long getGross() {
-        return gross;
+        return this.gross;
     }
     
     public long getBudget() {
-        return budget;
+        return this.budget;
     }
     
     public String getCountry() {
-        return country;
+        return this.country;
     }
     
     public String getLanguage() {
-        return language;
+        return this.language;
     }
     
     public boolean isColored() {
-        return colored;
+        return this.colored;
     }
     
     public String getLinkToInformation() {
-        return linkToInformation;
+        return this.linkToInformation;
     }
     
     public ArrayList<String> getPlotKeywords() {
-        return plotKeywords;
+        return this.plotKeywords;
+    }
+    
+    public int getFbLikes(){
+        return this.fbLikes;
     }
     
     @Override
     public String toString(){
-        return this.title + " "+ this.releaseYear + " "+ this.genre + " "+this.duration + " "+
-                this.director + " "+ this.actors + " "+ this.score + " "+
+        return this.title + " "+ this.releaseYear + " "+ this.genres + " "+this.duration + " DirecId "+
+                this.directorId + " ActId "+ this.actorsId.size() + " "+ this.score + " "+
                 this.gross + " "+ this.budget + " " + this.country + " "+this.language+ " "+ this.colored + " "+
-                this.linkToInformation + " "+ this.plotKeywords;
+                this.linkToInformation + " "+ this.plotKeywords + " " + this.fbLikes;
+    }
+
+    public Director getDirector() {
+        return Director.directors.get(this.directorId);
     }
 }

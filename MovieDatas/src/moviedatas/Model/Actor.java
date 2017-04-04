@@ -6,6 +6,8 @@
 package moviedatas.Model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import moviedatas.Log;
 
 /**
  *
@@ -13,7 +15,8 @@ import java.util.ArrayList;
  */
 public class Actor extends MovieMember implements Comparable{
     
-    public static ArrayList<Actor> actors;
+    public static ArrayList<Actor> actors = new ArrayList<> ();
+    private static int currentId = 0;
     
     public Actor(String name, int fbLikes, ArrayList<Movie> movies) {
         super(name, fbLikes, movies);
@@ -24,5 +27,33 @@ public class Actor extends MovieMember implements Comparable{
         return this.name.compareTo(((Actor)o).getName());
     }
     
-    //public static void updateActorList(String name, int fbLikes, Movie movie)
+    public static void updateActorList(String name, int fbLikes, Movie movie){
+        if(actors.isEmpty()){
+            actors.add(new Actor(name,fbLikes,new ArrayList<>(Arrays.asList(movie))));
+        }else{
+            boolean isAdded = false;
+            for (int i = 0; i < actors.size(); i++) {
+                if(actors.get(i).getName().equalsIgnoreCase(name)){
+                    actors.get(i).addMovie(movie);
+                    isAdded = true;
+                }
+            }
+            if(!isAdded){
+                actors.add(new Actor(name,fbLikes,new ArrayList<>(Arrays.asList(movie))));
+            }
+        }
+    }
+    
+    public static int getId(String name){
+        for (int i = 0; i < actors.size(); i++) {
+            if(actors.get(i).getName().equalsIgnoreCase(name)){
+                return i;
+            }
+        }
+        return currentId++;
+    }
+    
+    private void addMovie(Movie movie){
+        this.movies.add(movie);
+    }
 }
