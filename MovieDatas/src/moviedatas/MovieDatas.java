@@ -13,19 +13,34 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BoxLayout;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import moviedatas.Controller.FilterPanelController;
 import moviedatas.Controller.MovieListController;
 import moviedatas.Controller.SortPanelController;
 import moviedatas.Model.Actor;
 import moviedatas.Model.Director;
 import moviedatas.Model.Movie;
+import moviedatas.View.ArchimedesSpiral;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.NumberTick;
+import static org.jfree.chart.plot.PlotOrientation.VERTICAL;
+import org.jfree.chart.plot.PolarPlot;
+import org.jfree.chart.renderer.DefaultPolarItemRenderer;
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
+import org.jfree.ui.TextAnchor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
@@ -117,7 +132,7 @@ public class MovieDatas {
         
         //Log.e(movies.get(0).getActors().get(0));
         
-        /*
+        
         //1. Create the frame.
         JFrame frame = new JFrame("Movies Open Datas by Harp-e");
 
@@ -132,10 +147,87 @@ public class MovieDatas {
             moviePanel.add(labels.get(i));
         }
         JScrollPane scrollPanel = new JScrollPane(moviePanel);
+        
+        final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+
+			for (int i = 0; i <= 0; i++) {
+				dataset.addValue(movies.get(i).getBudget(), "Budget", new Integer(i));
+			}
+
+			for (int i = 0; i <= 0; i++) {
+				dataset.addValue(movies.get(i).getGross(), "Gross", new Integer(i));
+			}
+        
+        //final JFreeChart barChart = ChartFactory.createBarChart("Movies", "Movie", "Value (in $)", dataset, VERTICAL, true, true, false);
+        //final ChartPanel cPanel = new ChartPanel(barChart);
+        
+        /*
+        final XYSeriesCollection data = new XYSeriesCollection();
+        final XYSeries series1 = new XYSeries("Movie");
+                for (double theta = 0.0; theta < 360.0; theta += 72) {
+            final double radius = theta;
+            series1.add(theta, radius);
+        }
+        //final XYSeries series2 = createRandomData("Series 2", 50.0, 5.0);
+        //final XYSeries series3 = createRandomData("Series 3", 25.0, 1.0);
+        data.addSeries(series1);
+        //data.addSeries(series2);
+        //data.addSeries(series3);
+        
+        final JFreeChart polarChart = ChartFactory.createPolarChart("Other chart", data, true, true, true);
+        PolarPlot polarPlot = (PolarPlot) polarChart.getPlot();
+        polarPlot.setAngleLabelsVisible(false);
+        final ChartPanel cPanel = new ChartPanel(polarChart);
+            PolarPlot myPlot = new PolarPlot() {
+                protected List refreshAngleTicks() {
+                List ticks = new ArrayList();
+                ticks.add (new NumberTick (0, "12AM", TextAnchor.CENTER, TextAnchor.TOP_LEFT, 0));
+                ticks.add (new NumberTick (30, "2AM", TextAnchor.TOP_LEFT, TextAnchor.TOP_RIGHT, 0));
+                ticks.add (new NumberTick (60, "4AM", TextAnchor.TOP_LEFT, TextAnchor.TOP_LEFT, 0));
+                ticks.add (new NumberTick (90, "6AM", TextAnchor.TOP_LEFT, TextAnchor.TOP_LEFT, 0));
+                ticks.add (new NumberTick (120, "8AM", TextAnchor.TOP_LEFT, TextAnchor.TOP_LEFT, 0));
+                ticks.add (new NumberTick (150, "10AM", TextAnchor.TOP_LEFT, TextAnchor.TOP_LEFT, 0));
+                ticks.add (new NumberTick (180, "12PM", TextAnchor.CENTER, TextAnchor.TOP_LEFT, 0));
+                ticks.add (new NumberTick (210, "2PM", TextAnchor.TOP_RIGHT, TextAnchor.TOP_LEFT, 0));
+                ticks.add (new NumberTick (240, "4PM", TextAnchor.TOP_RIGHT, TextAnchor.TOP_LEFT, 0));
+                ticks.add (new NumberTick (270, "6PM", TextAnchor.TOP_RIGHT, TextAnchor.TOP_LEFT, 0));
+                ticks.add (new NumberTick (300, "8PM", TextAnchor.TOP_RIGHT, TextAnchor.TOP_LEFT, 0));
+                ticks.add (new NumberTick (330, "10PM", TextAnchor.TOP_RIGHT, TextAnchor.TOP_LEFT, 0));
+
+                return ticks;
+            }
+        };
+        DefaultPolarItemRenderer renderer = new DefaultPolarItemRenderer();
+        renderer.setSeriesFilled(0, true); */
+        
+       
+        //ArchimedesSpiral as = new ArchimedesSpiral("Radar");
+        //as.pack();
+        //as.setVisible(true);
 
         //3. Create components and put them in the frame.
         //...create emptyLabel...
-        frame.getContentPane().add(scrollPanel, BorderLayout.CENTER);
+        //Left panel
+        JPanel leftPanel = new JPanel();
+        leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.PAGE_AXIS));
+        JLabel leftLabel = new JLabel("Left Panel");
+        JComboBox comboBox = new JComboBox();
+        comboBox.addItem("Test1");
+        comboBox.addItem("Test2");
+        leftPanel.add(leftLabel);
+        leftPanel.add(comboBox);
+        frame.getContentPane().add(leftPanel, BorderLayout.WEST);
+        
+        
+        //Right Panel
+        JPanel rightPanel = new JPanel();
+        JLabel rightLabel = new JLabel("Right Panel");
+        rightPanel.add(rightLabel);
+        frame.getContentPane().add(rightPanel, BorderLayout.EAST);
+        
+        //Center Panel
+        frame.getContentPane().add(scrollPanel,BorderLayout.CENTER);
+        
 
         //4. Size the frame.
         frame.pack();
@@ -144,8 +236,6 @@ public class MovieDatas {
         frame.setVisible(true); 
         //ArrayList<Movie> movies = new ArrayList<>();
         //FilterController.filter(10,SortController.byTitle(movies));
-
-        */
     
     }
 
