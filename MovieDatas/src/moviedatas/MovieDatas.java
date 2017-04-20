@@ -30,6 +30,7 @@ import moviedatas.Model.Actor;
 import moviedatas.Model.Director;
 import moviedatas.Model.Movie;
 import moviedatas.View.ArchimedesSpiral;
+import moviedatas.View.TextAreaInButton;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -216,6 +217,8 @@ public class MovieDatas {
         comboBox.addItem("Test2");
         leftPanel.add(leftLabel);
         leftPanel.add(comboBox);
+        TextAreaInButton taib = new TextAreaInButton();
+        leftPanel.add(taib.getButton());
         frame.getContentPane().add(leftPanel, BorderLayout.WEST);
         
         
