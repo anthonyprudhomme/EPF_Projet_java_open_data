@@ -29,7 +29,7 @@ import moviedatas.Controller.SortPanelController;
 import moviedatas.Model.Actor;
 import moviedatas.Model.Director;
 import moviedatas.Model.Movie;
-import moviedatas.View.ArchimedesSpiral;
+//import moviedatas.View.ArchimedesSpiral;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
