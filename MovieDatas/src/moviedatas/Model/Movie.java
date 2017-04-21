@@ -6,6 +6,7 @@
 package moviedatas.Model;
 
 import java.util.ArrayList;
+import moviedatas.Log;
 
 /**
  *
@@ -125,5 +126,15 @@ public class Movie {
 
     public Director getDirector() {
         return Director.directors.get(this.directorId);
+    }
+    
+    public static Movie getMovieFromName(ArrayList<Movie> movies, String movieName){
+        Log.e(movies.size() + " "+movieName);
+        for (int i = 0; i < movies.size(); i++) {
+            if(movies.get(i).getTitle().equalsIgnoreCase(movieName)){
+                return movies.get(i);
+            }
+        }
+        return null;
     }
 }

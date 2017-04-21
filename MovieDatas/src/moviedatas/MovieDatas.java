@@ -7,15 +7,21 @@ package moviedatas;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.ScrollPane;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -24,6 +30,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import moviedatas.Controller.FilterController;
+import javax.swing.border.TitledBorder;
+import moviedatas.Controller.MovieInfoController;
+import moviedatas.Controller.MovieInfoControllerInterface;
 import moviedatas.Controller.MovieListController;
 import moviedatas.Controller.SortController;
 import moviedatas.Model.Actor;
@@ -33,17 +42,25 @@ import moviedatas.View.FilterPanelView;
 import moviedatas.View.MovieListView;
 import moviedatas.View.MovieInfoView;
 import moviedatas.View.SortPanelView;
-//import moviedatas.View.ArchimedesSpiral;
+import moviedatas.View.BarChartView;
+import moviedatas.View.GlobalChart;
+import moviedatas.View.MovieInfoView;
+import moviedatas.View.MovieListView;
+import moviedatas.View.SpiderChartView;
+import moviedatas.View.SpiderWebChart;
+import moviedatas.View.TextAreaInButton;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberTick;
 import static org.jfree.chart.plot.PlotOrientation.VERTICAL;
 import org.jfree.chart.plot.PolarPlot;
+import org.jfree.chart.plot.SpiderWebPlot;
 import org.jfree.chart.renderer.DefaultPolarItemRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
+import org.jfree.ui.RefineryUtilities;
 import org.jfree.ui.TextAnchor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -54,18 +71,12 @@ import org.json.simple.parser.ParseException;
  *
  * @author anthony
  */
-public class MovieDatas {
+public class MovieDatas{
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        
-        MovieListController movieListController = new MovieListController();
-        movieListController.initMovies();
-        ArrayList<Movie> movies = movieListController.getAllMovies();
-        //Log.e(movies.size());
-        //Log.e(movies.get(1));
         FilterController fpc = new FilterController();
         //Log.e("By size: " + fpc.bySize(movies, 50).size());
         /*ArrayList<Movie> moviesFiltered =fpc.byActor(movies, "Wes Studi"); 
@@ -143,72 +154,15 @@ public class MovieDatas {
 //2. Optional: What happens when the frame closes?
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        /*ArrayList<JLabel> labels = new ArrayList();
-        JPanel moviePanel = new JPanel();
-        moviePanel.setLayout(new BoxLayout(moviePanel, BoxLayout.PAGE_AXIS));
-        for (int i = 0; i < movies.size(); i++) {
-            labels.add(new JLabel( movies.get(i).getTitle()));
-            moviePanel.add(labels.get(i));
-        }
-        JScrollPane scrollPanel = new JScrollPane(moviePanel);*/
-        
-        final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-
-        for (int i = 0; i <= 0; i++) {
-                dataset.addValue(movies.get(i).getBudget(), "Budget", new Integer(i));
-        }
-
-        for (int i = 0; i <= 0; i++) {
-                dataset.addValue(movies.get(i).getGross(), "Gross", new Integer(i));
-        }
-        
         //final JFreeChart barChart = ChartFactory.createBarChart("Movies", "Movie", "Value (in $)", dataset, VERTICAL, true, true, false);
         //final ChartPanel cPanel = new ChartPanel(barChart);
         
-        /*
-        final XYSeriesCollection data = new XYSeriesCollection();
-        final XYSeries series1 = new XYSeries("Movie");
-                for (double theta = 0.0; theta < 360.0; theta += 72) {
-            final double radius = theta;
-            series1.add(theta, radius);
-        }
-        //final XYSeries series2 = createRandomData("Series 2", 50.0, 5.0);
-        //final XYSeries series3 = createRandomData("Series 3", 25.0, 1.0);
-        data.addSeries(series1);
-        //data.addSeries(series2);
-        //data.addSeries(series3);
+        MovieListView movieListView = new MovieListView();
+        JPanel movieListPanel = movieListView.createViewPanel();
+        TitledBorder moviesTitle;
+        moviesTitle = BorderFactory.createTitledBorder("Movies");
+        movieListPanel.setBorder(moviesTitle);
         
-        final JFreeChart polarChart = ChartFactory.createPolarChart("Other chart", data, true, true, true);
-        PolarPlot polarPlot = (PolarPlot) polarChart.getPlot();
-        polarPlot.setAngleLabelsVisible(false);
-        final ChartPanel cPanel = new ChartPanel(polarChart);
-            PolarPlot myPlot = new PolarPlot() {
-                protected List refreshAngleTicks() {
-                List ticks = new ArrayList();
-                ticks.add (new NumberTick (0, "12AM", TextAnchor.CENTER, TextAnchor.TOP_LEFT, 0));
-                ticks.add (new NumberTick (30, "2AM", TextAnchor.TOP_LEFT, TextAnchor.TOP_RIGHT, 0));
-                ticks.add (new NumberTick (60, "4AM", TextAnchor.TOP_LEFT, TextAnchor.TOP_LEFT, 0));
-                ticks.add (new NumberTick (90, "6AM", TextAnchor.TOP_LEFT, TextAnchor.TOP_LEFT, 0));
-                ticks.add (new NumberTick (120, "8AM", TextAnchor.TOP_LEFT, TextAnchor.TOP_LEFT, 0));
-                ticks.add (new NumberTick (150, "10AM", TextAnchor.TOP_LEFT, TextAnchor.TOP_LEFT, 0));
-                ticks.add (new NumberTick (180, "12PM", TextAnchor.CENTER, TextAnchor.TOP_LEFT, 0));
-                ticks.add (new NumberTick (210, "2PM", TextAnchor.TOP_RIGHT, TextAnchor.TOP_LEFT, 0));
-                ticks.add (new NumberTick (240, "4PM", TextAnchor.TOP_RIGHT, TextAnchor.TOP_LEFT, 0));
-                ticks.add (new NumberTick (270, "6PM", TextAnchor.TOP_RIGHT, TextAnchor.TOP_LEFT, 0));
-                ticks.add (new NumberTick (300, "8PM", TextAnchor.TOP_RIGHT, TextAnchor.TOP_LEFT, 0));
-                ticks.add (new NumberTick (330, "10PM", TextAnchor.TOP_RIGHT, TextAnchor.TOP_LEFT, 0));
-
-                return ticks;
-            }
-        };
-        DefaultPolarItemRenderer renderer = new DefaultPolarItemRenderer();
-        renderer.setSeriesFilled(0, true); */
-        
-       
-        //ArchimedesSpiral as = new ArchimedesSpiral("Radar");
-        //as.pack();
-        //as.setVisible(true);
-
 //3. Create components and put them in the frame.
         //----------------------------------------------------------------------
         // Sort & Filter panel
@@ -229,27 +183,37 @@ public class MovieDatas {
         //----------------------------------------------------------------------
         // Movie List Panel
         //----------------------------------------------------------------------
-        MovieListView listView = new MovieListView();
+        MovieInfoController movieInfoController = new MovieInfoController();
+        JPanel rightPanel = movieInfoController.initView();
+        TitledBorder infoTitle;
+        infoTitle = BorderFactory.createTitledBorder("Informations");
+        rightPanel.setBorder(infoTitle);
         
-        JPanel labelPanel = listView.createLabelPanel();
-        JScrollPane scrollListPanel = listView.createListPanel(movies);
+        JPanel topPanel = new JPanel();
+        topPanel.setLayout(new BorderLayout());
+        topPanel.add(sortFilterPanel, BorderLayout.WEST);
+        topPanel.add(rightPanel, BorderLayout.EAST);
+        topPanel.add(movieListPanel, BorderLayout.CENTER);
+        frame.getContentPane().add(topPanel, BorderLayout.NORTH);
         
-        JPanel globalPanel = new JPanel();
         
-        globalPanel.setLayout(new BoxLayout(globalPanel, BoxLayout.PAGE_AXIS));
+        JPanel middlePanel = new JPanel();
+        SpiderChartView spiderChartView = new SpiderChartView();
+        middlePanel.add(spiderChartView.initView());
+        frame.getContentPane().add(middlePanel, BorderLayout.CENTER);
         
-        globalPanel.add(labelPanel);
-        globalPanel.add(scrollListPanel);
+        BarChartView barChartView = new BarChartView();
+        middlePanel.add(barChartView.initView());
         
-        frame.getContentPane().add(globalPanel,BorderLayout.CENTER);
+        JPanel bottomPanel = new JPanel();
+        GlobalChart globalChartView = new GlobalChart();
+        bottomPanel.add(globalChartView.initView());
+        
+        frame.getContentPane().add(bottomPanel, BorderLayout.SOUTH);
         //----------------------------------------------------------------------
         // Movie Info Panel
         //----------------------------------------------------------------------
-        MovieInfoView infoView = new MovieInfoView();
         
-        JPanel infoPanel = infoView.createInfoPanel();
-        
-        frame.getContentPane().add(infoPanel, BorderLayout.EAST);
         //----------------------------------------------------------------------
 
 //4. Size the frame.
@@ -261,6 +225,8 @@ public class MovieDatas {
         //FilterController.filter(10,SortController.byTitle(movies));
     
     }
+    
+    
 
     public JPanel createGlobalPanel() {
         SortPanelView sortFilterView = new SortPanelView();

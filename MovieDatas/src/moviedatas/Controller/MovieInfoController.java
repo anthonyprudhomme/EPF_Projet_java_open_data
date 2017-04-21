@@ -5,10 +5,29 @@
  */
 package moviedatas.Controller;
 
+import javax.swing.JPanel;
+import moviedatas.Model.Movie;
+import moviedatas.View.MovieInfoView;
+
 /**
  *
  * @author anthony
  */
-public class MovieInfoController {
+public class MovieInfoController implements MovieInfoControllerInterface{
+    private MovieInfoView movieInfoView = new MovieInfoView();
+    public static MovieInfoControllerInterface observer;
     
+    public JPanel initView(){
+        observer = this;
+        return movieInfoView.createViewPanel();
+    }
+    
+    public void updateViewWithMovie(Movie movie){
+        movieInfoView.updateInformations(movieInfoView.getInfoPanel(), movie);
+    }
+
+    @Override
+    public void newMovieSelected(Movie movie) {
+        this.updateViewWithMovie(movie);
+    }
 }
