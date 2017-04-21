@@ -96,24 +96,17 @@ public class MovieListView implements SortControllerInterface{
         
         observer = this;
         movieListViewPanel = new JPanel();
+<<<<<<< HEAD
 //        movieListViewPanel.setPreferredSize(new Dimension(500,500));
 //        movieListViewPanel.setMaximumSize(movieListViewPanel.getPreferredSize());
+=======
+>>>>>>> 7fc801a976ec23d4f3ffbeb811ccb93ae6c98755
         movieListViewPanel.setLayout(new BoxLayout(movieListViewPanel, BoxLayout.PAGE_AXIS));
-        
-//        // Resize the scroll panel
-        JPanel newScrollPanel = new JPanel();
-        newScrollPanel.setPreferredSize(new Dimension(500,600));
-        newScrollPanel.setMaximumSize(newScrollPanel.getPreferredSize());
-        TitledBorder scrollTitle = BorderFactory.createTitledBorder("");
-        newScrollPanel.setBorder(scrollTitle); // Create a border for the panel
-//        newScrollPanel.add(scrollPanel);
         
         // Create a panel for the search bar
         JPanel searchPanel = new JPanel();
         searchPanel.setPreferredSize(new Dimension(220,100)); // Set the preferred size
         searchPanel.setMaximumSize(searchPanel.getPreferredSize()); // Apply the maximum size
-//        TitledBorder searchTitle = BorderFactory.createTitledBorder("");
-//        searchPanel.setBorder(searchTitle); // Create a border for the panel
         
         // Create the search bar for movies
         JTextField searchMovie = new HintTextField("Search a movie");
@@ -158,8 +151,6 @@ public class MovieListView implements SortControllerInterface{
         
         // Add the search bar panel at the global panel
         movieListViewPanel.add(searchPanel);
-        newScrollPanel.add(scrollPanel);
-//        movieListViewPanel.add(newScrollPanel);
         movieListViewPanel.add(scrollPanel);
         return movieListViewPanel;
     }
