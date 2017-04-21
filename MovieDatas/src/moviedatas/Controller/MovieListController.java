@@ -27,24 +27,12 @@ import org.json.simple.JSONValue;
  */
 public class MovieListController {
     
-    private ArrayList<Movie> movies = new ArrayList<>();
+    public static ArrayList<Movie> allMovies = new ArrayList<>();
     
     public void initMovies(){
         String moviesString = loadMoviesFromFile();
         JSONArray movieDatas = (JSONArray) JSONValue.parse(moviesString);
-        Log.e(movieDatas.size());
-        Log.e(movieDatas.get(0));
-        /*ArrayList<Movie> actorMovies = null;
-        Actor actor = new Actor("John Doe", 5000,actorMovies);
-        ArrayList<Actor> actors = new ArrayList<>();
-        actors.add(actor);
-        Movie movie = new Movie("Avatar",2000,"Action",150, new Director(null,0,null),actors,1.3,100,100,"France","French",true,"link",new ArrayList<String>() );
-        Log.e(movie.getActors().get(0).getMovies());
-        actorMovies.add(movie);
-        Log.e(movie.getActors().get(0).getMovies().size());*/
         for (int i =0; i < movieDatas.size(); i++){
-        //for (int i =0; i < 10; i++){
-            //Log.e(movieDatas.get(i));
             String title = ((JSONObject)movieDatas.get(i)).get("movie_title").toString();
             int releaseYear = 0;
             if(((JSONObject)movieDatas.get(i)).get("title_year") != null){
@@ -130,7 +118,7 @@ public class MovieListController {
             }
             Movie currentMovie = new Movie(title,releaseYear,genres,duration,directorId,actorsId,score,gross,budget,
                     country,language,colored,linkToInformation,plotKeywords,fbLikes);
-            movies.add(currentMovie);
+            allMovies.add(currentMovie);
             
             Actor.updateActorList(actor1Name, actor1FbLikes, currentMovie);
             Actor.updateActorList(actor2Name, actor2FbLikes, currentMovie);
@@ -175,7 +163,18 @@ public class MovieListController {
     }
 
     public ArrayList<Movie> getMovies() {
-        return movies;
+        return allMovies;
+    }
+    
+    public ArrayList<Movie> filterByTitle(ArrayList<Movie> movies, String searchedTitle){
+        ArrayList<Movie> returnedList = new ArrayList<>();
+        for (int i = 0; i < movies.size(); i++) {
+            String currentTitle = movies.get(i).getTitle();
+                if(currentTitle.toLowerCase().contains(searchedTitle.toLowerCase())){
+                    returnedList.add(movies.get(i));
+                }
+        }
+        return returnedList;
     }
     
 }
