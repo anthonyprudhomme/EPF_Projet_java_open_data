@@ -110,6 +110,7 @@ public class FilterPanelView {
         JComboCheckBox comboGenre = new JComboCheckBox();
         
         // Create a CheckBox in the ComboBox for each genre
+        comboGenre.addItem("-- Genre --");
         for (int i = 1; i < genres.size(); i++) {
             comboGenre.addItem( new JCheckBox(genres.get(i)) );
         }
@@ -121,12 +122,11 @@ public class FilterPanelView {
     private JPanel searchDirector() {
         JPanel directorPanel = new JPanel();
         // Resize the panel in order not to be too large
-        directorPanel.setPreferredSize(new Dimension(400,75));
-//        directorPanel.setMinimumSize(new Dimension(400,75));
-//        directorPanel.setMaximumSize(new Dimension(400,75));
+        directorPanel.setPreferredSize(new Dimension(200,75));
         
         // Create the search bar with a text which can be hide
         HintTextField searchBar = new HintTextField("Search a director");
+        searchBar.setPreferredSize(new Dimension(200,75));
         
         // Add the search bar at the panel
         directorPanel.add(searchBar);
@@ -142,6 +142,7 @@ public class FilterPanelView {
         
         // Create the search bar with a text which can be hide
         HintTextField searchBar = new HintTextField("Search an actor");
+        searchBar.setPreferredSize(new Dimension(200,75));
         
         // Add the search bar at the panel
         actorPanel.add(searchBar);
@@ -156,6 +157,7 @@ public class FilterPanelView {
         JComboCheckBox comboCountries = new JComboCheckBox();
         
         // Create a CheckBox in the ComboBox for each country
+        comboCountries.addItem("-- Country --");
         for (int i = 1; i < countries.size(); i++) {
             comboCountries.addItem( new JCheckBox(countries.get(i)) );
         }
@@ -170,6 +172,7 @@ public class FilterPanelView {
         JComboCheckBox comboLanguages = new JComboCheckBox();
         
         // Create a CheckBox in the ComboBox for each language
+        comboLanguages.addItem("-- Language --");
         for (int i = 1; i < languages.size(); i++) {
             comboLanguages.addItem( new JCheckBox(languages.get(i)) );
         }
@@ -200,6 +203,7 @@ public class FilterPanelView {
         JComboCheckBox comboKeywords = new JComboCheckBox();
         
         // Create a CheckBox in the ComboBox for each keyword
+        comboKeywords.addItem("-- Keywords --");
         for (int i = 1; i < keywords.size(); i++) {
             comboKeywords.addItem( new JCheckBox(keywords.get(i)) );
         }

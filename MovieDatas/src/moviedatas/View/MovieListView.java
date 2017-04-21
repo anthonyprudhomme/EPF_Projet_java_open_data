@@ -15,12 +15,14 @@ import java.awt.event.MouseEvent;
 import java.awt.font.TextAttribute;
 import java.util.ArrayList;
 import java.util.Map;
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import moviedatas.Controller.MovieInfoController;
@@ -91,13 +93,36 @@ public class MovieListView implements SortControllerInterface{
     }
 
     public JPanel createViewPanel() {
+        
         observer = this;
-        movieListViewPanel = new JPanel();
+        JPanel movieListViewPanel = new JPanel();
+//        movieListViewPanel.setPreferredSize(new Dimension(500,500));
+//        movieListViewPanel.setMaximumSize(movieListViewPanel.getPreferredSize());
         movieListViewPanel.setLayout(new BoxLayout(movieListViewPanel, BoxLayout.PAGE_AXIS));
         
+//        // Resize the scroll panel
+        JPanel newScrollPanel = new JPanel();
+        newScrollPanel.setPreferredSize(new Dimension(500,600));
+        newScrollPanel.setMaximumSize(newScrollPanel.getPreferredSize());
+        TitledBorder scrollTitle = BorderFactory.createTitledBorder("");
+        newScrollPanel.setBorder(scrollTitle); // Create a border for the panel
+//        newScrollPanel.add(scrollPanel);
+        
+        // Create a panel for the search bar
+        JPanel searchPanel = new JPanel();
+        searchPanel.setPreferredSize(new Dimension(220,100)); // Set the preferred size
+        searchPanel.setMaximumSize(searchPanel.getPreferredSize()); // Apply the maximum size
+        TitledBorder searchTitle = BorderFactory.createTitledBorder("");
+        searchPanel.setBorder(searchTitle); // Create a border for the panel
+        
+        // Create the search bar for movies
         JTextField searchMovie = new HintTextField("Search a movie");
+        searchMovie.setPreferredSize(new Dimension(200,75));
+        
+        // Create a variable with all movie
         movieListController.initMovies();
         ArrayList<Movie> movies = movieListController.getAllMovies();
+        
         searchMovie.getDocument().addDocumentListener(new DocumentListener() {
             public void changedUpdate(DocumentEvent e) {
                 updateListPanel(movieListController.filterByTitle(movies, searchMovie.getText()));
@@ -106,12 +131,14 @@ public class MovieListView implements SortControllerInterface{
                 movieListViewPanel.updateUI();
                 
             }
+            
             public void removeUpdate(DocumentEvent e) {
                 updateListPanel(movieListController.filterByTitle(movies, searchMovie.getText()));
                 movieListViewPanel.remove(1);
                 movieListViewPanel.add(scrollPanel);
                 movieListViewPanel.updateUI();
             }
+            
             public void insertUpdate(DocumentEvent e) {
                 updateListPanel(movieListController.filterByTitle(movies, searchMovie.getText()));
                 movieListViewPanel.remove(1);
@@ -119,10 +146,15 @@ public class MovieListView implements SortControllerInterface{
                 movieListViewPanel.updateUI();
             }
         });
-        searchMovie.setPreferredSize(new Dimension(150,50));
         updateListPanel(movies);
         
-        movieListViewPanel.add(searchMovie);
+        // Add the search at the panel
+        searchPanel.add(searchMovie);
+        
+        // Add the search bar panel at the global panel
+        movieListViewPanel.add(searchPanel);
+        newScrollPanel.add(scrollPanel);
+//        movieListViewPanel.add(newScrollPanel);
         movieListViewPanel.add(scrollPanel);
         return movieListViewPanel;
     }
@@ -134,9 +166,6 @@ public class MovieListView implements SortControllerInterface{
         movieListViewPanel.add(scrollPanel);
         movieListViewPanel.updateUI();
     }
-    
-    
-    
     //Class that override the textField component to add hint to it
     class HintTextField extends JTextField implements FocusListener {
 
