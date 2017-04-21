@@ -88,6 +88,15 @@ public class FilterPanelView {
             }
         });
         
+        comboSize.addActionListener (new ActionListener () {
+            public void actionPerformed(ActionEvent e) {
+                JComboBox currentItem = (JComboBox) e.getSource();
+                ArrayList<String> size = new ArrayList<>();
+                size.add((String)currentItem.getSelectedItem());
+                addGlobalInformations("Size",size);
+            }
+        });
+        
         // Return the global panel
         return filterPanel;
     }
@@ -189,9 +198,25 @@ public class FilterPanelView {
         JCheckBox color = new JCheckBox("Color");
         JCheckBox noColor = new JCheckBox("B&W");
         
+//        color.addActionListener (new ActionListener () {
+//            public void actionPerformed(ActionEvent e) {
+//                JCheckBox currentItem = (JCheckBox) e.getSource();
+//                addGlobalInformations("Color",(String)Boolean.toString(currentItem.isSelected()));
+//            }
+//        });
+//        
+//        noColor.addActionListener (new ActionListener () {
+//            public void actionPerformed(ActionEvent e) {
+//                JCheckBox currentItem = (JCheckBox) e.getSource();
+//                addGlobalInformations("Color",(String)Boolean.toString(currentItem.isSelected()));
+//            }
+//        });
+        
         // Add the 2 CheckBox at the panel
         colorPanel.add(color);
         colorPanel.add(noColor);
+        
+        
         
         // Return the panel
         return colorPanel;

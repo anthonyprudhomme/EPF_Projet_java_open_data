@@ -20,6 +20,8 @@ import javafx.scene.control.CheckBox;
 import moviedatas.Log;
 
 public class JComboCheckBox extends JComboBox {
+    
+    private ArrayList<String> selectedValues = new ArrayList<>();
     public JComboCheckBox() {
         addStuff();
     }
@@ -84,16 +86,15 @@ public class JComboCheckBox extends JComboBox {
     }
     
     public ArrayList<String> getSelectedValues(){
-        ArrayList<String> selectedValues = new ArrayList<>();
-        Log.e(this.getItemCount());
-        Log.e(this.getComponents()[0]);
-        for (int i = 0; i < this.getItemCount(); i++) {
-            JCheckBox currentCheckBox = (JCheckBox) this.getItemAt(i);
-            if(currentCheckBox.isSelected()){
-                selectedValues.add(currentCheckBox.getText());
+//        for (int i = 1; i < this.getItemCount(); i++) {
+            JCheckBox currentCheckBox = (JCheckBox) (JCheckBox)getSelectedItem();
+            if(!currentCheckBox.isSelected()){
+                selectedValues.add((currentCheckBox.getText()));
+            }else{
+                selectedValues.remove(currentCheckBox.getText());
             }
-        }
-        
+//        }
+        Log.e("-------");
         for (int i = 0; i < selectedValues.size(); i++) {
             Log.e(selectedValues.get(i));
         }

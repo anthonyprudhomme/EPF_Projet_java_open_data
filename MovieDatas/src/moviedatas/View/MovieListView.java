@@ -95,7 +95,7 @@ public class MovieListView implements SortControllerInterface{
     public JPanel createViewPanel() {
         
         observer = this;
-        JPanel movieListViewPanel = new JPanel();
+        movieListViewPanel = new JPanel();
 //        movieListViewPanel.setPreferredSize(new Dimension(500,500));
 //        movieListViewPanel.setMaximumSize(movieListViewPanel.getPreferredSize());
         movieListViewPanel.setLayout(new BoxLayout(movieListViewPanel, BoxLayout.PAGE_AXIS));

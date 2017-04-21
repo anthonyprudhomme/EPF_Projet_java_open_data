@@ -124,7 +124,12 @@ public class FilterController {
         for (int i=0; i < filters.size(); i++) {
             switch (filters.get(i).getKey()) {
                 case "Size":
-                    filteredMovies = this.bySize(filteredMovies, Integer.parseInt(filters.get(i).getValue().get(0)));
+                    Log.e(filters.get(i).getValue() + " "+ filters.get(i).getValue().get(0));
+                    if(!filters.get(i).getValue().get(0).equalsIgnoreCase("-- Size of list --")){
+                        filteredMovies = this.bySize(filteredMovies, Integer.parseInt(filters.get(i).getValue().get(0)));
+                    }else{
+                        filteredMovies = MovieListController.allMovies;
+                    }
                     break;
                 case "Genre":
                     filteredMovies = this.byGenre(filteredMovies, filters.get(i).getValue());
@@ -154,6 +159,7 @@ public class FilterController {
                     filteredMovies = this.byDirector(filteredMovies, filters.get(i).getValue().get(0));
                     break;
             }
+            filters.remove(filters.get(i));
         }
         return filteredMovies;
     }
