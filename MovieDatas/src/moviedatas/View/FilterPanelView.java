@@ -63,22 +63,30 @@ public class FilterPanelView {
         filterPanel.add(colorPanel);
         
         // Add listener for each ComboBox
-        comboSize.addActionListener (new ActionListener () {
+        comboGenre.addActionListener (new ActionListener () {
             public void actionPerformed(ActionEvent e) {
-//                sizeF = true;
-//                addGlobalInformations("Size",((String)((JComboBox)e.getSource()).getSelectedItem()));
+                JComboCheckBox currentItem = (JComboCheckBox) e.getSource();
+                addGlobalInformations("Genre",currentItem.getSelectedValues());
             }
         });
-//        comboGenre.addActionListener (new ActionListener () {
-//            public void actionPerformed(ActionEvent e) {
-//                addGlobalInformations("Genre",((String)((JComboBox)e.getSource()).getSelectedItem()));
-//            }
-//        });
-//        comboCountries.addActionListener (new ActionListener () {
-//            public void actionPerformed(ActionEvent e) {
-//                addGlobalInformations("Country",((String)((JComboBox)e.getSource()).getSelectedItem()));
-//            }
-//        });
+        comboCountries.addActionListener (new ActionListener () {
+            public void actionPerformed(ActionEvent e) {
+                JComboCheckBox currentItem = (JComboCheckBox) e.getSource();
+                addGlobalInformations("Country",currentItem.getSelectedValues());
+            }
+        });
+        comboLanguages.addActionListener (new ActionListener () {
+            public void actionPerformed(ActionEvent e) {
+                JComboCheckBox currentItem = (JComboCheckBox) e.getSource();
+                addGlobalInformations("Language",currentItem.getSelectedValues());
+            }
+        });
+        comboKeywords.addActionListener (new ActionListener () {
+            public void actionPerformed(ActionEvent e) {
+                JComboCheckBox currentItem = (JComboCheckBox) e.getSource();
+                addGlobalInformations("Keywords",currentItem.getSelectedValues());
+            }
+        });
         
         // Return the global panel
         return filterPanel;
@@ -207,7 +215,7 @@ public class FilterPanelView {
     private void addGlobalInformations(String nameFilter, ArrayList<String> value) {        
         Pair<String, ArrayList<String>> newFilter = new Pair<>(nameFilter, value);
         filters.add(newFilter);
-        
-        filterPC.listFilter(filters);
+        ArrayList<Movie> filteredMovies = filterPC.listFilter(filters);
+        MovieListView.observer.updateMovieList(filteredMovies);
     }
 }

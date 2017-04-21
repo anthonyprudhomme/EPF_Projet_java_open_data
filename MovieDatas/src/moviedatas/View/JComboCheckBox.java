@@ -16,6 +16,8 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.table.*;
 import java.util.*;
+import javafx.scene.control.CheckBox;
+import moviedatas.Log;
 
 public class JComboCheckBox extends JComboBox {
     public JComboCheckBox() {
@@ -79,5 +81,18 @@ public class JComboCheckBox extends JComboBox {
             return defaultLabel;
             }
         }
+    }
+    
+    public ArrayList<String> getSelectedValues(){
+        ArrayList<String> selectedValues = new ArrayList<>();
+        Log.e(this.getItemCount());
+        Log.e(this.getComponents()[0]);
+        for (int i = 0; i < this.getItemCount(); i++) {
+            JCheckBox currentCheckBox = (JCheckBox) this.getItemAt(i);
+            if(currentCheckBox.isSelected()){
+                selectedValues.add(currentCheckBox.getText());
+            }
+        }
+        return selectedValues;
     }
 }

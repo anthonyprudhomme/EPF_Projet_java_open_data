@@ -29,6 +29,7 @@ import moviedatas.Controller.MovieInfoController;
 import static moviedatas.Controller.MovieInfoController.observer;
 import moviedatas.Controller.MovieInfoControllerInterface;
 import moviedatas.Controller.MovieListController;
+import moviedatas.Controller.SortControllerInterface;
 import moviedatas.Log;
 import moviedatas.Model.Movie;
 
@@ -36,9 +37,12 @@ import moviedatas.Model.Movie;
  *
  * @author anthony
  */
-public class MovieListView {
+public class MovieListView implements SortControllerInterface{
     private MovieListController movieListController = new MovieListController();
     JScrollPane scrollPanel;
+    JPanel movieListViewPanel;
+    public static SortControllerInterface observer;
+    
     
     private void updateListPanel(ArrayList<Movie> movies) {
         ArrayList<JLabel> labels = new ArrayList();
@@ -85,10 +89,12 @@ public class MovieListView {
         
         scrollPanel = new JScrollPane(moviePanel);
         scrollPanel.setPreferredSize(new Dimension(150,150));
+        
     }
 
     public JPanel createViewPanel() {
         
+        observer = this;
         JPanel movieListViewPanel = new JPanel();
 //        movieListViewPanel.setPreferredSize(new Dimension(500,500));
 //        movieListViewPanel.setMaximumSize(movieListViewPanel.getPreferredSize());
@@ -123,6 +129,7 @@ public class MovieListView {
                 movieListViewPanel.remove(1);
                 movieListViewPanel.add(scrollPanel);
                 movieListViewPanel.updateUI();
+                
             }
             
             public void removeUpdate(DocumentEvent e) {
@@ -139,7 +146,6 @@ public class MovieListView {
                 movieListViewPanel.updateUI();
             }
         });
-        
         updateListPanel(movies);
         
         // Add the search at the panel
@@ -153,6 +159,13 @@ public class MovieListView {
         return movieListViewPanel;
     }
     
+    @Override
+    public void updateMovieList(ArrayList<Movie> movies) {
+        updateListPanel(movies);
+        movieListViewPanel.remove(1);
+        movieListViewPanel.add(scrollPanel);
+        movieListViewPanel.updateUI();
+    }
     //Class that override the textField component to add hint to it
     class HintTextField extends JTextField implements FocusListener {
 

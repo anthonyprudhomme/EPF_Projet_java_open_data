@@ -121,29 +121,40 @@ public class FilterController {
     
     public ArrayList<Movie> listFilter(ArrayList<Pair<String, ArrayList<String>>> filters) {
         ArrayList<Movie> filteredMovies = MovieListController.allMovies;
-        boolean filterSize = false;
-        int id = 0;
-        
         for (int i=0; i < filters.size(); i++) {
             switch (filters.get(i).getKey()) {
                 case "Size":
-                    filterSize = true;
-                    id = i;
+                    filteredMovies = this.bySize(filteredMovies, Integer.parseInt(filters.get(i).getValue().get(0)));
                     break;
                 case "Genre":
-                    filteredMovies = byGenre(filteredMovies,
-                            filters.get(id).getValue());
+                    filteredMovies = this.byGenre(filteredMovies, filters.get(i).getValue());
+                    break;
                 case "Country":
-                    filteredMovies = byCountry(filteredMovies,
-                            filters.get(id).getValue());
+                    filteredMovies = this.byCountry(filteredMovies, filters.get(i).getValue());
+                    break;
+
+                case "Language" :
+                    filteredMovies = this.byLanguage(filteredMovies, filters.get(i).getValue());
+                    break;
+
+                case "Keywords" :
+                    filteredMovies = this.byKeywords(filteredMovies, filters.get(i).getValue());
+                    break;
+
+                case "Color" :
+                    
+                    filteredMovies = this.byColor(filteredMovies, Boolean.getBoolean(filters.get(i).getValue().get(0)));
+                    break;
+
+                case "Actor" :
+                    filteredMovies = this.byActor(filteredMovies, filters.get(i).getValue().get(0));
+                    break;
+
+                case "Director" :
+                    filteredMovies = this.byDirector(filteredMovies, filters.get(i).getValue().get(0));
+                    break;
             }
         }
-        
-//        if (FilterPanelView.sizeF.getKey()) {
-//            filteredMovies = bySize(filteredMovies,
-//                    Integer.parseInt(filters.get(id).getValue().get(0)));
-//        }
-        
         return filteredMovies;
     }
 }
