@@ -150,12 +150,10 @@ public class MovieDatas{
         
 //1. Create the frame.
         JFrame frame = new JFrame("Movies Open Datas by Harp-e");
+        frame.setPreferredSize(new Dimension(1280,800));
 
 //2. Optional: What happens when the frame closes?
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
-        //final JFreeChart barChart = ChartFactory.createBarChart("Movies", "Movie", "Value (in $)", dataset, VERTICAL, true, true, false);
-        //final ChartPanel cPanel = new ChartPanel(barChart);
         
         MovieListView movieListView = new MovieListView();
         JPanel movieListPanel = movieListView.createViewPanel();
