@@ -29,6 +29,7 @@ import org.json.simple.JSONValue;
  */
 public class MovieListController {
     
+    
     static public ArrayList<Movie> allMovies = new ArrayList<>();
     static public ArrayList<Movie> filteredMovies = new ArrayList<>();
     static public ArrayList<String> allGenres = new ArrayList<>();
@@ -243,4 +244,6 @@ public class MovieListController {
     public ArrayList<String> getKeywords() {
         return allKeywords;
     }
+
+    
 }

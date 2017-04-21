@@ -27,6 +27,7 @@ import moviedatas.Controller.MovieInfoController;
 import static moviedatas.Controller.MovieInfoController.observer;
 import moviedatas.Controller.MovieInfoControllerInterface;
 import moviedatas.Controller.MovieListController;
+import moviedatas.Controller.SortControllerInterface;
 import moviedatas.Log;
 import moviedatas.Model.Movie;
 
@@ -34,9 +35,12 @@ import moviedatas.Model.Movie;
  *
  * @author anthony
  */
-public class MovieListView {
+public class MovieListView implements SortControllerInterface{
     private MovieListController movieListController = new MovieListController();
     JScrollPane scrollPanel;
+    JPanel movieListViewPanel;
+    public static SortControllerInterface observer;
+    
     
     private void updateListPanel(ArrayList<Movie> movies) {
         ArrayList<JLabel> labels = new ArrayList();
@@ -83,11 +87,12 @@ public class MovieListView {
         
         scrollPanel = new JScrollPane(moviePanel);
         scrollPanel.setPreferredSize(new Dimension(150,150));
+        
     }
 
     public JPanel createViewPanel() {
-        
-        JPanel movieListViewPanel = new JPanel();
+        observer = this;
+        movieListViewPanel = new JPanel();
         movieListViewPanel.setLayout(new BoxLayout(movieListViewPanel, BoxLayout.PAGE_AXIS));
         
         JTextField searchMovie = new HintTextField("Search a movie");
@@ -96,29 +101,38 @@ public class MovieListView {
         searchMovie.getDocument().addDocumentListener(new DocumentListener() {
             public void changedUpdate(DocumentEvent e) {
                 updateListPanel(movieListController.filterByTitle(movies, searchMovie.getText()));
-                movieListViewPanel.remove(2);
+                movieListViewPanel.remove(1);
                 movieListViewPanel.add(scrollPanel);
                 movieListViewPanel.updateUI();
+                
             }
             public void removeUpdate(DocumentEvent e) {
                 updateListPanel(movieListController.filterByTitle(movies, searchMovie.getText()));
-                movieListViewPanel.remove(2);
+                movieListViewPanel.remove(1);
                 movieListViewPanel.add(scrollPanel);
                 movieListViewPanel.updateUI();
             }
             public void insertUpdate(DocumentEvent e) {
                 updateListPanel(movieListController.filterByTitle(movies, searchMovie.getText()));
-                movieListViewPanel.remove(2);
+                movieListViewPanel.remove(1);
                 movieListViewPanel.add(scrollPanel);
                 movieListViewPanel.updateUI();
             }
         });
-        searchMovie.setPreferredSize(new Dimension(50,50));
+        searchMovie.setPreferredSize(new Dimension(150,50));
         updateListPanel(movies);
         
         movieListViewPanel.add(searchMovie);
         movieListViewPanel.add(scrollPanel);
         return movieListViewPanel;
+    }
+    
+    @Override
+    public void updateMovieList(ArrayList<Movie> movies) {
+        updateListPanel(movies);
+        movieListViewPanel.remove(1);
+        movieListViewPanel.add(scrollPanel);
+        movieListViewPanel.updateUI();
     }
     
     

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import moviedatas.Log;
+import moviedatas.View.MovieListView;
 
 /**
  *
@@ -167,7 +168,7 @@ public class SortController {
                 moviesSort = byFbLikes(moviesSort);
                 break;
         }
-        
+        MovieListView.observer.updateMovieList(moviesSort);
         
     }
     
