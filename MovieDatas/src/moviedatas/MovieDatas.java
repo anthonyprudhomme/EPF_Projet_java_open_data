@@ -23,12 +23,16 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import moviedatas.Controller.FilterPanelController;
+import moviedatas.Controller.FilterController;
 import moviedatas.Controller.MovieListController;
-import moviedatas.Controller.SortPanelController;
+import moviedatas.Controller.SortController;
 import moviedatas.Model.Actor;
 import moviedatas.Model.Director;
 import moviedatas.Model.Movie;
+import moviedatas.View.FilterPanelView;
+import moviedatas.View.MovieListView;
+import moviedatas.View.MovieInfoView;
+import moviedatas.View.SortPanelView;
 //import moviedatas.View.ArchimedesSpiral;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -59,10 +63,10 @@ public class MovieDatas {
         
         MovieListController movieListController = new MovieListController();
         movieListController.initMovies();
-        ArrayList<Movie> movies = movieListController.getMovies();
+        ArrayList<Movie> movies = movieListController.getAllMovies();
         //Log.e(movies.size());
         //Log.e(movies.get(1));
-        FilterPanelController fpc = new FilterPanelController();
+        FilterController fpc = new FilterController();
         //Log.e("By size: " + fpc.bySize(movies, 50).size());
         /*ArrayList<Movie> moviesFiltered =fpc.byActor(movies, "Wes Studi"); 
         for (int i = 0; i < moviesFiltered.size(); i++) {
@@ -118,45 +122,45 @@ public class MovieDatas {
             Log.e(moviesFiltered.get(i).getTitle() + " "+ moviesFiltered.get(i).getLanguage());
         }*/
         
-        SortPanelController spc = new SortPanelController();
+        SortController spc = new SortController();
         
         /*ArrayList<Movie> moviesSorted =spc.byTitle(fpc.bySize(movies, 50)); 
         for (int i = 0; i < moviesSorted.size(); i++) {
             Log.e(moviesSorted.get(i).getTitle());
         }*/
         
-        ArrayList<Movie> moviesSorted =spc.byBudget(fpc.bySize(movies, 50)); 
+        /*ArrayList<Movie> moviesSorted =spc.byBudget(fpc.bySize(movies, 50)); 
         for (int i = 0; i < moviesSorted.size(); i++) {
             Log.e(moviesSorted.get(i).getTitle()+ " "+ moviesSorted.get(i).getBudget());
-        }
+        }*/
         
         //Log.e(movies.get(0).getActors().get(0));
         
         
-        //1. Create the frame.
+//1. Create the frame.
         JFrame frame = new JFrame("Movies Open Datas by Harp-e");
 
-        //2. Optional: What happens when the frame closes?
+//2. Optional: What happens when the frame closes?
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        ArrayList<JLabel> labels = new ArrayList();
+        /*ArrayList<JLabel> labels = new ArrayList();
         JPanel moviePanel = new JPanel();
         moviePanel.setLayout(new BoxLayout(moviePanel, BoxLayout.PAGE_AXIS));
         for (int i = 0; i < movies.size(); i++) {
             labels.add(new JLabel( movies.get(i).getTitle()));
             moviePanel.add(labels.get(i));
         }
-        JScrollPane scrollPanel = new JScrollPane(moviePanel);
+        JScrollPane scrollPanel = new JScrollPane(moviePanel);*/
         
         final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
-			for (int i = 0; i <= 0; i++) {
-				dataset.addValue(movies.get(i).getBudget(), "Budget", new Integer(i));
-			}
+        for (int i = 0; i <= 0; i++) {
+                dataset.addValue(movies.get(i).getBudget(), "Budget", new Integer(i));
+        }
 
-			for (int i = 0; i <= 0; i++) {
-				dataset.addValue(movies.get(i).getGross(), "Gross", new Integer(i));
-			}
+        for (int i = 0; i <= 0; i++) {
+                dataset.addValue(movies.get(i).getGross(), "Gross", new Integer(i));
+        }
         
         //final JFreeChart barChart = ChartFactory.createBarChart("Movies", "Movie", "Value (in $)", dataset, VERTICAL, true, true, false);
         //final ChartPanel cPanel = new ChartPanel(barChart);
@@ -205,38 +209,73 @@ public class MovieDatas {
         //as.pack();
         //as.setVisible(true);
 
-        //3. Create components and put them in the frame.
-        //...create emptyLabel...
-        //Left panel
-        JPanel leftPanel = new JPanel();
-        leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.PAGE_AXIS));
-        JLabel leftLabel = new JLabel("Left Panel");
-        JComboBox comboBox = new JComboBox();
-        comboBox.addItem("Test1");
-        comboBox.addItem("Test2");
-        leftPanel.add(leftLabel);
-        leftPanel.add(comboBox);
-        frame.getContentPane().add(leftPanel, BorderLayout.WEST);
+//3. Create components and put them in the frame.
+        //----------------------------------------------------------------------
+        // Sort & Filter panel
+        //----------------------------------------------------------------------
+        SortPanelView sortFilterView = new SortPanelView();
+        FilterPanelView filterPanelView = new FilterPanelView();
         
+        JPanel sortPanel = sortFilterView.createSortPanel();
+        JPanel filterPanel = filterPanelView.createFilterPanel();
+        JPanel sortFilterPanel = new JPanel();
         
-        //Right Panel
-        JPanel rightPanel = new JPanel();
-        JLabel rightLabel = new JLabel("Right Panel");
-        rightPanel.add(rightLabel);
-        frame.getContentPane().add(rightPanel, BorderLayout.EAST);
+        sortFilterPanel.setLayout(new BoxLayout(sortFilterPanel, BoxLayout.PAGE_AXIS));
         
-        //Center Panel
-        frame.getContentPane().add(scrollPanel,BorderLayout.CENTER);
+        sortFilterPanel.add(sortPanel);
+        sortFilterPanel.add(filterPanel);
         
+        frame.getContentPane().add(sortFilterPanel, BorderLayout.WEST);
+        //----------------------------------------------------------------------
+        // Movie List Panel
+        //----------------------------------------------------------------------
+        MovieListView listView = new MovieListView();
+        
+        JPanel labelPanel = listView.createLabelPanel();
+        JScrollPane scrollListPanel = listView.createListPanel(movies);
+        
+        JPanel globalPanel = new JPanel();
+        
+        globalPanel.setLayout(new BoxLayout(globalPanel, BoxLayout.PAGE_AXIS));
+        
+        globalPanel.add(labelPanel);
+        globalPanel.add(scrollListPanel);
+        
+        frame.getContentPane().add(globalPanel,BorderLayout.CENTER);
+        //----------------------------------------------------------------------
+        // Movie Info Panel
+        //----------------------------------------------------------------------
+        MovieInfoView infoView = new MovieInfoView();
+        
+        JPanel infoPanel = infoView.createInfoPanel();
+        
+        frame.getContentPane().add(infoPanel, BorderLayout.EAST);
+        //----------------------------------------------------------------------
 
-        //4. Size the frame.
+//4. Size the frame.
         frame.pack();
 
-        //5. Show it.
+//5. Show it.
         frame.setVisible(true); 
         //ArrayList<Movie> movies = new ArrayList<>();
         //FilterController.filter(10,SortController.byTitle(movies));
     
     }
 
+    public JPanel createGlobalPanel() {
+        SortPanelView sortFilterView = new SortPanelView();
+        FilterPanelView filterPanelView = new FilterPanelView();
+        
+        JPanel sortPanel = sortFilterView.createSortPanel();
+        JPanel filterPanel = filterPanelView.createFilterPanel();
+        JPanel globalPanel = new JPanel();
+        
+        globalPanel.setLayout(new BoxLayout(globalPanel, BoxLayout.PAGE_AXIS));
+        
+        globalPanel.add(sortPanel);
+        globalPanel.add(filterPanel);
+        
+        return globalPanel;
+    }
+    
 }

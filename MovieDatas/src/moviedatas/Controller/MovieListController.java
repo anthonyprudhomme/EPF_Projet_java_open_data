@@ -11,6 +11,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import moviedatas.Log;
@@ -27,7 +29,12 @@ import org.json.simple.JSONValue;
  */
 public class MovieListController {
     
-    private ArrayList<Movie> movies = new ArrayList<>();
+    static public ArrayList<Movie> allMovies = new ArrayList<>();
+    static public ArrayList<Movie> filteredMovies = new ArrayList<>();
+    static public ArrayList<String> allGenres = new ArrayList<>();
+    static public ArrayList<String> allCountries = new ArrayList<>();
+    static public ArrayList<String> allLanguages = new ArrayList<>();
+    static public ArrayList<String> allKeywords = new ArrayList<>();
     
     public void initMovies(){
         String moviesString = loadMoviesFromFile();
@@ -42,44 +49,53 @@ public class MovieListController {
         Log.e(movie.getActors().get(0).getMovies());
         actorMovies.add(movie);
         Log.e(movie.getActors().get(0).getMovies().size());*/
-        for (int i =0; i < movieDatas.size(); i++){
+        for (int i =0; i < movieDatas.size(); i++) {
         //for (int i =0; i < 10; i++){
             //Log.e(movieDatas.get(i));
             String title = ((JSONObject)movieDatas.get(i)).get("movie_title").toString();
+            
             int releaseYear = 0;
             if(((JSONObject)movieDatas.get(i)).get("title_year") != null){
                 releaseYear = Integer.parseInt(((JSONObject)movieDatas.get(i)).get("title_year").toString());
             }
+            
             String genresNotSplitted = ((JSONObject)movieDatas.get(i)).get("genres").toString();
             String[] genresSplitted = genresNotSplitted.split("\\|");
             ArrayList<String> genres = new ArrayList<>();
             genres.addAll(Arrays.asList(genresSplitted));
+            
             int duration = 0;
             if(((JSONObject)movieDatas.get(i)).get("duration") != null){
                 duration = Integer.parseInt(((JSONObject)movieDatas.get(i)).get("duration").toString());
             }
+            
             double score = 0;
             if(((JSONObject)movieDatas.get(i)).get("duration") != null){
                 score = Double.parseDouble(((JSONObject)movieDatas.get(i)).get("duration").toString());
             }
+            
             long gross = 0;
             if(((JSONObject)movieDatas.get(i)).get("gross") != null){
                 gross = Long.parseLong(((JSONObject)movieDatas.get(i)).get("gross").toString());
             }
+            
             long budget = 0;
             if(((JSONObject)movieDatas.get(i)).get("budget") != null){
                 budget = Long.parseLong(((JSONObject)movieDatas.get(i)).get("budget").toString());
             }
+            
             String country = ((JSONObject)movieDatas.get(i)).get("country").toString();
             String language = ((JSONObject)movieDatas.get(i)).get("language").toString();
             String coloredStr = ((JSONObject)movieDatas.get(i)).get("color").toString();
+            
             boolean colored = false;
             if(coloredStr.equalsIgnoreCase("color")){
                 colored = true;
             }
+            
             String linkToInformation = ((JSONObject)movieDatas.get(i)).get("movie_imdb_link").toString();
-            String keywords = ((JSONObject)movieDatas.get(i)).get("plot_keywords").toString();
-            String[] kewordsSplitted = keywords.split("\\|");
+            String keywordsNotSplitted = ((JSONObject)movieDatas.get(i)).get("plot_keywords").toString();
+            String[] kewordsSplitted = keywordsNotSplitted.split("\\|");
             ArrayList<String> plotKeywords = new ArrayList<>();
             for (int j = 0; j < kewordsSplitted.length; j++) {
                 plotKeywords.add(kewordsSplitted[j]);
@@ -130,17 +146,52 @@ public class MovieListController {
             }
             Movie currentMovie = new Movie(title,releaseYear,genres,duration,directorId,actorsId,score,gross,budget,
                     country,language,colored,linkToInformation,plotKeywords,fbLikes);
-            movies.add(currentMovie);
+            allMovies.add(currentMovie);
             
             Actor.updateActorList(actor1Name, actor1FbLikes, currentMovie);
             Actor.updateActorList(actor2Name, actor2FbLikes, currentMovie);
             Actor.updateActorList(actor3Name, actor3FbLikes, currentMovie);
             Director.updateDirectorList(directorName, directorFbLikes, currentMovie);
             
+            // Add every genre, country, languages and keywords to lists
+            allGenres.addAll(genres);
+            allCountries.add(country);
+            allLanguages.add(language);
+            allKeywords.addAll(plotKeywords);
         }
+        
+//------------------------------------------------------------------------------
+//                  Remove duplicates in list with a Set
+//------------------------------------------------------------------------------
+        Set<String> hs = new HashSet<>();
+        
+        // Genres
+        hs.addAll(allGenres);
+        allGenres.clear();
+        allGenres.addAll(hs);
+        hs.clear();
+        
+        // Countries
+        hs.addAll(allCountries);
+        allCountries.clear();
+        allCountries.addAll(hs);
+        hs.clear();
+        
+        // Languages
+        hs.addAll(allLanguages);
+        allLanguages.clear();
+        allLanguages.addAll(hs);
+        hs.clear();
+        
+        // Keywords
+        hs.addAll(allKeywords);
+        allKeywords.clear();
+        allKeywords.addAll(hs);
+        hs.clear();
+//------------------------------------------------------------------------------
     }
     
-    // Method that load movies from the json file
+    // Method that load allMovies from the json file
     private String loadMoviesFromFile(){
         // String that will contain the whole json file
         String moviesString = "";
@@ -174,8 +225,23 @@ public class MovieListController {
         return moviesString;
     }
 
-    public ArrayList<Movie> getMovies() {
-        return movies;
+    public ArrayList<Movie> getAllMovies() {
+        return allMovies;
     }
     
+    public ArrayList<String> getGenres() {
+        return allGenres;
+    }
+    
+    public ArrayList<String> getCountries() {
+        return allCountries;
+    }
+    
+    public ArrayList<String> getLanguages() {
+        return allLanguages;
+    }
+    
+    public ArrayList<String> getKeywords() {
+        return allKeywords;
+    }
 }

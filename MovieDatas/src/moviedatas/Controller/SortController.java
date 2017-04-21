@@ -15,7 +15,7 @@ import moviedatas.Log;
  *
  * @author anthony
  */
-public class SortPanelController {
+public class SortController {
     
     public ArrayList<Movie> byTitle(ArrayList<Movie> movies){
         Collections.sort(movies, new Comparator<Movie>() {
@@ -45,6 +45,7 @@ public class SortPanelController {
         });
         return movies;
     }
+    
     public ArrayList<Movie> byDuration(ArrayList<Movie> movies){
         Collections.sort(movies, new Comparator<Movie>() {
             @Override
@@ -63,6 +64,7 @@ public class SortPanelController {
         });
         return movies;
     }
+    
     public ArrayList<Movie> byScore(ArrayList<Movie> movies){
         Collections.sort(movies, new Comparator<Movie>() {
             @Override
@@ -81,6 +83,7 @@ public class SortPanelController {
         });
         return movies;
     }
+    
     public ArrayList<Movie> byGross(ArrayList<Movie> movies){
         Collections.sort(movies, new Comparator<Movie>() {
             @Override
@@ -99,6 +102,7 @@ public class SortPanelController {
         });
         return movies;
     }
+    
     public ArrayList<Movie> byBudget(ArrayList<Movie> movies){
         Collections.sort(movies, new Comparator<Movie>() {
             @Override
@@ -117,6 +121,7 @@ public class SortPanelController {
         });
         return movies;
     }
+    
     public ArrayList<Movie> byFbLikes(ArrayList<Movie> movies){
         Collections.sort(movies, new Comparator<Movie>() {
             @Override
@@ -134,5 +139,49 @@ public class SortPanelController {
             }
         });
         return movies;
+    }
+    
+    public void moviesSort(String type) {
+        ArrayList<Movie> moviesSort = MovieListController.allMovies;
+        
+        switch (type) {
+            case "Title":
+                moviesSort = byTitle(moviesSort);
+                break;
+            case "Year":
+                moviesSort = byYear(moviesSort);
+                break;
+            case "Duration":
+                moviesSort = byDuration(moviesSort);
+                break;
+            case "Score":
+                moviesSort = byScore(moviesSort);
+                break;
+            case "Gross":
+                moviesSort = byGross(moviesSort);
+                break;
+            case "Budget":
+                moviesSort = byBudget(moviesSort);
+                break;
+            case "FB":
+                moviesSort = byFbLikes(moviesSort);
+                break;
+        }
+        
+        
+    }
+    
+    public ArrayList<String> sortList() {
+        ArrayList<String> list = new ArrayList<>();
+        
+        list.add("Title");
+        list.add("Year");
+        list.add("Duration");
+        list.add("Score");
+        list.add("Gross");
+        list.add("Budget");
+        list.add("Facebook likes");
+        
+        return list;
     }
 }

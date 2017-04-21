@@ -5,10 +5,20 @@
  */
 package moviedatas.View;
 
+import javax.swing.JPanel;
+import javax.swing.JLabel;
+
 /**
  *
  * @author anthony
  */
 public class MovieInfoView {
-    
+    public JPanel createInfoPanel() {
+        JPanel infoPanel = new JPanel();
+        JLabel labelPanel = new JLabel("Informations");
+        
+        infoPanel.add(labelPanel);
+        
+        return infoPanel;
+    }
 }

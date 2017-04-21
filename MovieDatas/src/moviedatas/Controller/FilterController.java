@@ -6,24 +6,27 @@
 package moviedatas.Controller;
 
 import java.util.ArrayList;
+import java.util.Objects;
+import javafx.util.Pair;
 import moviedatas.Log;
 import moviedatas.Model.Actor;
 import moviedatas.Model.Movie;
+import moviedatas.View.FilterPanelView;
 
 /**
  *
  * @author anthony
  */
-public class FilterPanelController {
+public class FilterController {
 
-    public ArrayList<Movie> bySize(ArrayList<Movie> movies, int size){
+    private ArrayList<Movie> bySize(ArrayList<Movie> movies, int size){
         ArrayList<Movie> returnedList;
         Log.e("size: "+movies.size());
         returnedList = new ArrayList<>(movies.subList(0, size));
         return returnedList;
     }
 
-    public ArrayList<Movie> byGenre(ArrayList<Movie> movies, ArrayList<String> genres){
+    private ArrayList<Movie> byGenre(ArrayList<Movie> movies, ArrayList<String> genres){
         ArrayList<Movie> returnedList = new ArrayList<>();
         for (int i = 0; i < movies.size(); i++) {
               ArrayList<String> movieGenres = movies.get(i).getGenres();
@@ -40,7 +43,7 @@ public class FilterPanelController {
         return returnedList;
     }
 
-    public ArrayList<Movie> byDirector(ArrayList<Movie> movies, String directorName){
+    private ArrayList<Movie> byDirector(ArrayList<Movie> movies, String directorName){
         ArrayList<Movie> returnedList = new ArrayList<>();
         for (int i = 0; i < movies.size(); i++) {
             if(movies.get(i).getDirector().getName().equalsIgnoreCase(directorName) ){
@@ -50,7 +53,7 @@ public class FilterPanelController {
         return returnedList;
     }
 
-    public ArrayList<Movie> byActor(ArrayList<Movie> movies, String actorName){
+    private ArrayList<Movie> byActor(ArrayList<Movie> movies, String actorName){
         ArrayList<Movie> returnedList = new ArrayList<>();
         for (int i = 0; i < movies.size(); i++) {
             ArrayList<Actor> movieActors = movies.get(i).getActors();
@@ -63,7 +66,7 @@ public class FilterPanelController {
         return returnedList;
     }
 
-    public ArrayList<Movie> byCountry(ArrayList<Movie> movies, ArrayList<String> countries){
+    private ArrayList<Movie> byCountry(ArrayList<Movie> movies, ArrayList<String> countries){
         ArrayList<Movie> returnedList = new ArrayList<>();
         for (int i = 0; i < movies.size(); i++) {
             String country = movies.get(i).getCountry();
@@ -76,7 +79,7 @@ public class FilterPanelController {
         return returnedList;
     }
 
-    public ArrayList<Movie> byLanguage(ArrayList<Movie> movies, ArrayList<String> languages){
+    private ArrayList<Movie> byLanguage(ArrayList<Movie> movies, ArrayList<String> languages){
         ArrayList<Movie> returnedList = new ArrayList<>();
         for (int i = 0; i < movies.size(); i++) {
             String language = movies.get(i).getLanguage();
@@ -89,7 +92,7 @@ public class FilterPanelController {
         return returnedList;
     }
 
-    public ArrayList<Movie> byColor(ArrayList<Movie> movies, boolean colored){
+    private ArrayList<Movie> byColor(ArrayList<Movie> movies, boolean colored){
         ArrayList<Movie> returnedList = new ArrayList<>();
         for (int i = 0; i < movies.size(); i++) {
             if(movies.get(i).isColored() == colored){
@@ -99,7 +102,7 @@ public class FilterPanelController {
         return returnedList;
     }
 
-    public ArrayList<Movie> byKeywords(ArrayList<Movie> movies, ArrayList<String> keywords){
+    private ArrayList<Movie> byKeywords(ArrayList<Movie> movies, ArrayList<String> keywords){
         ArrayList<Movie> returnedList = new ArrayList<>();
         for (int i = 0; i < movies.size(); i++) {
               ArrayList<String> movieKeywords = movies.get(i).getPlotKeywords();
@@ -116,4 +119,31 @@ public class FilterPanelController {
         return returnedList;
     }
     
+    public ArrayList<Movie> listFilter(ArrayList<Pair<String, ArrayList<String>>> filters) {
+        ArrayList<Movie> filteredMovies = MovieListController.allMovies;
+        boolean filterSize = false;
+        int id = 0;
+        
+        for (int i=0; i < filters.size(); i++) {
+            switch (filters.get(i).getKey()) {
+                case "Size":
+                    filterSize = true;
+                    id = i;
+                    break;
+                case "Genre":
+                    filteredMovies = byGenre(filteredMovies,
+                            filters.get(id).getValue());
+                case "Country":
+                    filteredMovies = byCountry(filteredMovies,
+                            filters.get(id).getValue());
+            }
+        }
+        
+//        if (FilterPanelView.sizeF.getKey()) {
+//            filteredMovies = bySize(filteredMovies,
+//                    Integer.parseInt(filters.get(id).getValue().get(0)));
+//        }
+        
+        return filteredMovies;
+    }
 }
