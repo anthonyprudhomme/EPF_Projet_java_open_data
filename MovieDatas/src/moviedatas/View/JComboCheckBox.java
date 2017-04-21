@@ -93,6 +93,10 @@ public class JComboCheckBox extends JComboBox {
                 selectedValues.add(currentCheckBox.getText());
             }
         }
+        
+        for (int i = 0; i < selectedValues.size(); i++) {
+            Log.e(selectedValues.get(i));
+        }
         return selectedValues;
     }
 }
