@@ -189,6 +189,7 @@ public class MovieDatas{
         
         JPanel topPanel = new JPanel();
         topPanel.setLayout(new BorderLayout());
+        topPanel.setPreferredSize(new Dimension(1280,400));
         topPanel.add(sortFilterPanel, BorderLayout.WEST);
         topPanel.add(rightPanel, BorderLayout.EAST);
         topPanel.add(movieListPanel, BorderLayout.CENTER);

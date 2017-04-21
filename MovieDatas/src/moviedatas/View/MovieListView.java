@@ -112,8 +112,8 @@ public class MovieListView implements SortControllerInterface{
         JPanel searchPanel = new JPanel();
         searchPanel.setPreferredSize(new Dimension(220,100)); // Set the preferred size
         searchPanel.setMaximumSize(searchPanel.getPreferredSize()); // Apply the maximum size
-        TitledBorder searchTitle = BorderFactory.createTitledBorder("");
-        searchPanel.setBorder(searchTitle); // Create a border for the panel
+//        TitledBorder searchTitle = BorderFactory.createTitledBorder("");
+//        searchPanel.setBorder(searchTitle); // Create a border for the panel
         
         // Create the search bar for movies
         JTextField searchMovie = new HintTextField("Search a movie");
@@ -125,25 +125,30 @@ public class MovieListView implements SortControllerInterface{
         
         searchMovie.getDocument().addDocumentListener(new DocumentListener() {
             public void changedUpdate(DocumentEvent e) {
-                updateListPanel(movieListController.filterByTitle(movies, searchMovie.getText()));
-                movieListViewPanel.remove(1);
-                movieListViewPanel.add(scrollPanel);
-                movieListViewPanel.updateUI();
-                
+                if (!searchMovie.getText().equals("Search a movie")) {
+                    updateListPanel(movieListController.filterByTitle(movies, searchMovie.getText()));
+                    movieListViewPanel.remove(1);
+                    movieListViewPanel.add(scrollPanel);
+                    movieListViewPanel.updateUI();
+                }
             }
             
             public void removeUpdate(DocumentEvent e) {
-                updateListPanel(movieListController.filterByTitle(movies, searchMovie.getText()));
-                movieListViewPanel.remove(1);
-                movieListViewPanel.add(scrollPanel);
-                movieListViewPanel.updateUI();
+                if (!searchMovie.getText().equals("Search a movie")) {
+                    updateListPanel(movieListController.filterByTitle(movies, searchMovie.getText()));
+                    movieListViewPanel.remove(1);
+                    movieListViewPanel.add(scrollPanel);
+                    movieListViewPanel.updateUI();
+                }
             }
             
             public void insertUpdate(DocumentEvent e) {
-                updateListPanel(movieListController.filterByTitle(movies, searchMovie.getText()));
-                movieListViewPanel.remove(1);
-                movieListViewPanel.add(scrollPanel);
-                movieListViewPanel.updateUI();
+                if (!searchMovie.getText().equals("Search a movie")) {
+                    updateListPanel(movieListController.filterByTitle(movies, searchMovie.getText()));
+                    movieListViewPanel.remove(1);
+                    movieListViewPanel.add(scrollPanel);
+                    movieListViewPanel.updateUI();
+                }
             }
         });
         updateListPanel(movies);

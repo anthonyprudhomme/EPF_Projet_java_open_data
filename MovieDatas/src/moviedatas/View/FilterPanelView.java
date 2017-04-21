@@ -126,7 +126,7 @@ public class FilterPanelView {
         
         // Create the search bar with a text which can be hide
         HintTextField searchBar = new HintTextField("Search a director");
-        searchBar.setPreferredSize(new Dimension(200,75));
+        searchBar.setPreferredSize(new Dimension(200,50));
         
         // Add the search bar at the panel
         directorPanel.add(searchBar);
@@ -138,11 +138,11 @@ public class FilterPanelView {
     private JPanel searchActor() {
         JPanel actorPanel = new JPanel();
         // Resize the panel in order not to be too large
-        actorPanel.setPreferredSize(new Dimension(400,75));
+        actorPanel.setPreferredSize(new Dimension(200,75));
         
         // Create the search bar with a text which can be hide
         HintTextField searchBar = new HintTextField("Search an actor");
-        searchBar.setPreferredSize(new Dimension(200,75));
+        searchBar.setPreferredSize(new Dimension(200,50));
         
         // Add the search bar at the panel
         actorPanel.add(searchBar);
