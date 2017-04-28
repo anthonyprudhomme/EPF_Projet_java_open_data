@@ -23,10 +23,6 @@ import moviedatas.Controller.FilterController;
 import moviedatas.Controller.MovieListController;
 import moviedatas.Controller.SortController;
 
-/**
- *
- * @author anthony
- */
 public class SortPanelView {
     private SortController sc = new SortController();
     

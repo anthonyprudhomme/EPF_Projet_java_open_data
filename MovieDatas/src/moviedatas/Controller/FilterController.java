@@ -6,22 +6,19 @@
 package moviedatas.Controller;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 import javafx.util.Pair;
 import moviedatas.Log;
 import moviedatas.Model.Actor;
 import moviedatas.Model.Movie;
 import moviedatas.View.FilterPanelView;
 
-/**
- *
- * @author anthony
- */
 public class FilterController {
 
     private ArrayList<Movie> bySize(ArrayList<Movie> movies, int size){
         ArrayList<Movie> returnedList;
-        Log.e("size: "+movies.size());
         returnedList = new ArrayList<>(movies.subList(0, size));
         return returnedList;
     }
@@ -121,46 +118,92 @@ public class FilterController {
     
     public ArrayList<Movie> listFilter(ArrayList<Pair<String, ArrayList<String>>> filters) {
         ArrayList<Movie> filteredMovies = MovieListController.allMovies;
+        int nbSize = 0;
+        boolean sizeActive = false;
+        
         for (int i=0; i < filters.size(); i++) {
             switch (filters.get(i).getKey()) {
                 case "Size":
-                    Log.e(filters.get(i).getValue() + " "+ filters.get(i).getValue().get(0));
-                    if(!filters.get(i).getValue().get(0).equalsIgnoreCase("-- Size of list --")){
-                        filteredMovies = this.bySize(filteredMovies, Integer.parseInt(filters.get(i).getValue().get(0)));
-                    }else{
-                        filteredMovies = MovieListController.allMovies;
+                    if ( (!filters.get(i).getValue().get(0).equalsIgnoreCase("-- Size of list --"))
+                            && (!filters.get(i).getValue().get(0).equalsIgnoreCase("All")) ) {
+//                        filteredMovies = this.bySize(filteredMovies,
+//                                Integer.parseInt(filters.get(i).getValue().get(0)));
+                        nbSize = Integer.parseInt(filters.get(i).getValue().get(0));
+                        sizeActive = true;
+                    } else {
+                        // Do nothing because we don't have a filter
                     }
                     break;
                 case "Genre":
-                    filteredMovies = this.byGenre(filteredMovies, filters.get(i).getValue());
+                    if(!filters.get(i).getValue().get(0).equalsIgnoreCase("All")){
+                        filteredMovies = this.byGenre(filteredMovies,
+                            filters.get(i).getValue());
+                    } else {
+                        // Do nothing because we don't have a filter
+                    }
                     break;
                 case "Country":
-                    filteredMovies = this.byCountry(filteredMovies, filters.get(i).getValue());
+                    if(!filters.get(i).getValue().get(0).equalsIgnoreCase("All")){
+                        Log.e("Filter value: " + filters.get(i).getValue());
+                        filteredMovies = this.byCountry(filteredMovies,
+                                filters.get(i).getValue());
+                    } else {
+                        // Do nothing because we don't have a filter
+                    }
                     break;
 
                 case "Language" :
-                    filteredMovies = this.byLanguage(filteredMovies, filters.get(i).getValue());
+                    if(!filters.get(i).getValue().get(0).equalsIgnoreCase("All")){
+                        filteredMovies = this.byLanguage(filteredMovies,
+                                filters.get(i).getValue());
+                    } else {
+                        // Do nothing because we don't have a filter
+                    }
                     break;
 
                 case "Keywords" :
-                    filteredMovies = this.byKeywords(filteredMovies, filters.get(i).getValue());
+                    if(!filters.get(i).getValue().get(0).equalsIgnoreCase("All")){
+                        filteredMovies = this.byKeywords(filteredMovies,
+                                filters.get(i).getValue());
+                    } else {
+                        // Do nothing because we don't have a filter
+                    }
                     break;
 
                 case "Color" :
-                    
-                    filteredMovies = this.byColor(filteredMovies, Boolean.getBoolean(filters.get(i).getValue().get(0)));
+                    boolean colored = true;
+                    if(filters.get(i).getValue().get(0).equalsIgnoreCase("1")){
+                        colored = true;
+                    }else{
+                        colored = false;
+                    }
+                    filteredMovies = this.byColor(filteredMovies, colored);
                     break;
 
                 case "Actor" :
-                    filteredMovies = this.byActor(filteredMovies, filters.get(i).getValue().get(0));
+                    if(!filters.get(i).getValue().get(0).equalsIgnoreCase("All")){
+                        filteredMovies = this.byActor(filteredMovies,
+                                filters.get(i).getValue().get(0));
+                    } else {
+                        // Do nothing because we don't have a filter
+                    }
                     break;
 
                 case "Director" :
-                    filteredMovies = this.byDirector(filteredMovies, filters.get(i).getValue().get(0));
+                    if(!filters.get(i).getValue().get(0).equalsIgnoreCase("All")){
+                        filteredMovies = this.byDirector(filteredMovies,
+                                filters.get(i).getValue().get(0));
+                    } else {
+                        // Do nothing because we don't have a filter
+                    }
                     break;
             }
-            filters.remove(filters.get(i));
         }
+        
+        if (sizeActive) {
+            filteredMovies = this.bySize(filteredMovies, nbSize);
+        }
+        
         return filteredMovies;
     }
 }

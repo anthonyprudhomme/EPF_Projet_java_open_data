@@ -67,86 +67,12 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.json.simple.parser.ParseException;
 
-/**
- *
- * @author anthony
- */
 public class MovieDatas{
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
         FilterController fpc = new FilterController();
-        //Log.e("By size: " + fpc.bySize(movies, 50).size());
-        /*ArrayList<Movie> moviesFiltered =fpc.byActor(movies, "Wes Studi"); 
-        for (int i = 0; i < moviesFiltered.size(); i++) {
-            Log.e(moviesFiltered.get(i).getTitle() + " "+ moviesFiltered.get(i).getActors().get(0).getName()
-            + " "+ moviesFiltered.get(i).getActors().get(1).getName()
-            + " "+ moviesFiltered.get(i).getActors().get(2).getName());
-        }*/
-        /*ArrayList<Movie> moviesFiltered =fpc.byDirector(movies, "James Cameron"); 
-        for (int i = 0; i < moviesFiltered.size(); i++) {
-            Log.e(moviesFiltered.get(i).getTitle() + " "+ moviesFiltered.get(i).getDirector().getName());
-        }*/
-        /*ArrayList<Movie> moviesFiltered =fpc.byColor(movies, false); 
-        for (int i = 0; i < moviesFiltered.size(); i++) {
-            Log.e(moviesFiltered.get(i).getTitle() + " "+ moviesFiltered.get(i).isColored());
-        }*/
-        /*ArrayList<String> countries = new ArrayList<>();
-        countries.add("France");
-        countries.add("Germany");
-        ArrayList<Movie> moviesFiltered =fpc.byCountry(movies, countries); 
-        for (int i = 0; i < moviesFiltered.size(); i++) {
-            Log.e(moviesFiltered.get(i).getTitle() + " "+ moviesFiltered.get(i).getCountry());
-        }*/
         
-        /*ArrayList<String> genres = new ArrayList<>();
-        genres.add("Action");
-        genres.add("Fantasy");
-        ArrayList<Movie> moviesFiltered =fpc.byGenre(movies, genres); 
-        for (int i = 0; i < moviesFiltered.size(); i++) {
-            Log.e(moviesFiltered.get(i).getTitle());
-            for (int j = 0; j < moviesFiltered.get(i).getGenres().size(); j++) {
-                Log.e(moviesFiltered.get(i).getGenres().get(j));
-            }
-            Log.e("------------------------------- ");
-        }*/
-        
-        /*ArrayList<String> keywords = new ArrayList<>();
-        keywords.add("Marriage");
-        keywords.add("Future");
-        ArrayList<Movie> moviesFiltered =fpc.byKeywords(movies, keywords); 
-        for (int i = 0; i < moviesFiltered.size(); i++) {
-            Log.e(moviesFiltered.get(i).getTitle());
-            for (int j = 0; j < moviesFiltered.get(i).getPlotKeywords().size(); j++) {
-                Log.e(moviesFiltered.get(i).getPlotKeywords().get(j));
-            }
-            Log.e("------------------------------- ");
-        }*/
-        
-        /*ArrayList<String> languages = new ArrayList<>();
-        languages.add("French");
-        languages.add("German");
-        ArrayList<Movie> moviesFiltered =fpc.byLanguage(movies, languages); 
-        for (int i = 0; i < moviesFiltered.size(); i++) {
-            Log.e(moviesFiltered.get(i).getTitle() + " "+ moviesFiltered.get(i).getLanguage());
-        }*/
-        
-        SortController spc = new SortController();
-        
-        /*ArrayList<Movie> moviesSorted =spc.byTitle(fpc.bySize(movies, 50)); 
-        for (int i = 0; i < moviesSorted.size(); i++) {
-            Log.e(moviesSorted.get(i).getTitle());
-        }*/
-        
-        /*ArrayList<Movie> moviesSorted =spc.byBudget(fpc.bySize(movies, 50)); 
-        for (int i = 0; i < moviesSorted.size(); i++) {
-            Log.e(moviesSorted.get(i).getTitle()+ " "+ moviesSorted.get(i).getBudget());
-        }*/
-        
-        //Log.e(movies.get(0).getActors().get(0));
-        
+        SortController spc = new SortController();        
         
 //1. Create the frame.
         JFrame frame = new JFrame("Movies Open Datas by Harp-e");
@@ -163,7 +89,7 @@ public class MovieDatas{
         
 //3. Create components and put them in the frame.
         //----------------------------------------------------------------------
-        // Sort & Filter panel
+        // Sort & Filter panel (right)
         //----------------------------------------------------------------------
         SortPanelView sortFilterView = new SortPanelView();
         FilterPanelView filterPanelView = new FilterPanelView();
@@ -179,40 +105,69 @@ public class MovieDatas{
         
         frame.getContentPane().add(sortFilterPanel, BorderLayout.WEST);
         //----------------------------------------------------------------------
-        // Movie List Panel
+        // Movie Info Panel (left)
         //----------------------------------------------------------------------
         MovieInfoController movieInfoController = new MovieInfoController();
-        JPanel rightPanel = movieInfoController.initView();
+        JPanel movieInfoView = movieInfoController.initView();
         TitledBorder infoTitle;
         infoTitle = BorderFactory.createTitledBorder("Informations");
-        rightPanel.setBorder(infoTitle);
+        movieInfoView.setBorder(infoTitle);
+        //----------------------------------------------------------------------
+        // Movie List Panel (middle)
+        //----------------------------------------------------------------------   
+        JPanel listPanel = new JPanel();
+        listPanel.setLayout(new BorderLayout());
+        listPanel.setPreferredSize(new Dimension(1280,400));
+        listPanel.add(sortFilterPanel, BorderLayout.WEST);
+        listPanel.add(movieInfoView, BorderLayout.EAST);
+        listPanel.add(movieListPanel, BorderLayout.CENTER);
+        frame.getContentPane().add(listPanel, BorderLayout.NORTH);
+        //----------------------------------------------------------------------
+        // Charts Panel (bottom)
+        //----------------------------------------------------------------------
+        JPanel chartPanel = new JPanel();
         
-        JPanel topPanel = new JPanel();
-        topPanel.setLayout(new BorderLayout());
-        topPanel.setPreferredSize(new Dimension(1280,400));
-        topPanel.add(sortFilterPanel, BorderLayout.WEST);
-        topPanel.add(rightPanel, BorderLayout.EAST);
-        topPanel.add(movieListPanel, BorderLayout.CENTER);
-        frame.getContentPane().add(topPanel, BorderLayout.NORTH);
-        
-        
-        JPanel middlePanel = new JPanel();
+        // Spider chart Panel
+        //______________________________________________________________________
+        // Create the panel
+        JPanel spiderPanel = new JPanel(); 
+        // Create the view
         SpiderChartView spiderChartView = new SpiderChartView();
-        middlePanel.add(spiderChartView.initView());
-        frame.getContentPane().add(middlePanel, BorderLayout.CENTER);
+        // Create a tilte
+        TitledBorder spiderTitle;
+        // Put a border around the title
+        spiderTitle = BorderFactory.createTitledBorder("Spider chart");
+        // Put the border on the panel
+        spiderPanel.setBorder(spiderTitle);
+        // Put the view on the panel
+        spiderPanel.add(spiderChartView.initView());
+        // Put the spider panel on the global panel
+        chartPanel.add(spiderPanel);
+        //______________________________________________________________________
         
+        // Bar chart Panel
+        //______________________________________________________________________
+        JPanel barPanel = new JPanel();
         BarChartView barChartView = new BarChartView();
-        middlePanel.add(barChartView.initView());
+        TitledBorder barTitle;
+        barTitle = BorderFactory.createTitledBorder("Bar chart");
+        barPanel.setBorder(barTitle);
+        barPanel.add(barChartView.initView());
+        chartPanel.add(barPanel);
+        //______________________________________________________________________
         
-        JPanel bottomPanel = new JPanel();
+        // Global chart Panel
+        //______________________________________________________________________
+        JPanel globalChartPanel = new JPanel();
         GlobalChart globalChartView = new GlobalChart();
-        bottomPanel.add(globalChartView.initView());
+        TitledBorder globalTitle;
+        globalTitle = BorderFactory.createTitledBorder("Global chart");
+        globalChartPanel.setBorder(globalTitle);
+        globalChartPanel.add(globalChartView.initView());
+        chartPanel.add(globalChartPanel);
+        //______________________________________________________________________
         
-        frame.getContentPane().add(bottomPanel, BorderLayout.SOUTH);
-        //----------------------------------------------------------------------
-        // Movie Info Panel
-        //----------------------------------------------------------------------
-        
+        frame.getContentPane().add(chartPanel, BorderLayout.CENTER);
         //----------------------------------------------------------------------
 
 //4. Size the frame.

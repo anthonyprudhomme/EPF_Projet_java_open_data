@@ -5,12 +5,6 @@
  */
 package moviedatas.View;
 
-/**
- *
- * @author hugo
- */
-/* * The following code is adapted from Java Forums - JCheckBox in JComboBox URL: http://forum.java.sun.com/thread.jspa?forumID=257&threadID=364705 Date of Access: July 28 2005 */
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -22,6 +16,8 @@ import moviedatas.Log;
 public class JComboCheckBox extends JComboBox {
     
     private ArrayList<String> selectedValues = new ArrayList<>();
+    private Component[] comboBoxes = null;
+    
     public JComboCheckBox() {
         addStuff();
     }
@@ -57,6 +53,12 @@ public class JComboCheckBox extends JComboBox {
             jcb.setSelected(!jcb.isSelected());
         }
     }
+
+    private void setCheckBoxList(Component[] parent) {
+        Log.e("In the method");
+        Log.e("Parent size: "+ parent.length);
+        this.comboBoxes = parent;
+    }
     
     class ComboBoxRenderer implements ListCellRenderer {
         private JLabel defaultLabel;
@@ -86,14 +88,37 @@ public class JComboCheckBox extends JComboBox {
     }
     
     public ArrayList<String> getSelectedValues(){
-//        for (int i = 1; i < this.getItemCount(); i++) {
-            JCheckBox currentCheckBox = (JCheckBox) (JCheckBox)getSelectedItem();
+        Object unknownItem = getSelectedItem();
+//        Log.e("Enfant : "+((JCheckBox) unknownItem).getComponentCount());
+//        Log.e("Parent : "+((JCheckBox) unknownItem).getParent().getComponentCount());
+        if (unknownItem instanceof JCheckBox) {
+            JCheckBox currentCheckBox = (JCheckBox) unknownItem;
+            if (this.comboBoxes == null) {
+                this.setCheckBoxList(currentCheckBox.getParent().getComponents());
+            }
             if(!currentCheckBox.isSelected()){
                 selectedValues.add((currentCheckBox.getText()));
             }else{
                 selectedValues.remove(currentCheckBox.getText());
             }
-//        }
+        } else {
+            selectedValues.clear();
+            selectedValues.add("All");
+
+            for (int i = 1; i < this.comboBoxes.length; i++) {
+                JCheckBox currentCheckBox = (JCheckBox)this.comboBoxes[i];
+                if(currentCheckBox.isSelected()){
+                    currentCheckBox.setSelected(false);
+                }
+                //((JCheckBox) unknownItem).getParent();
+                //Log.e("Enfant "+((JComboCheckBox)this.getComponents()[i].getParent()).);
+//                Log.e(((JCheckBox)this.getComponent(i)).isSelected());
+//                Log.e(this.getParent());
+//                Log.e("Parent "+this.getComponents()[i].getParent());
+//                Log.e("Number of component "+this.getComponents()[i].getParent().getComponentCount());
+            }
+        }
+        
         Log.e("-------");
         for (int i = 0; i < selectedValues.size(); i++) {
             Log.e(selectedValues.get(i));

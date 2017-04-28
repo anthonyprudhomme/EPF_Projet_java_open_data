@@ -23,10 +23,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
-/**
- *
- * @author anthony
- */
 public class MovieListController {
     
     
@@ -40,6 +36,7 @@ public class MovieListController {
     public void initMovies(){
         String moviesString = loadMoviesFromFile();
         JSONArray movieDatas = (JSONArray) JSONValue.parse(moviesString);
+        
         for (int i =0; i < movieDatas.size(); i++){
             String title = ((JSONObject)movieDatas.get(i)).get("movie_title").toString();
             

@@ -12,10 +12,6 @@ import java.util.Comparator;
 import moviedatas.Log;
 import moviedatas.View.MovieListView;
 
-/**
- *
- * @author anthony
- */
 public class SortController {
     
     public ArrayList<Movie> byTitle(ArrayList<Movie> movies){
@@ -169,7 +165,6 @@ public class SortController {
                 break;
         }
         MovieListView.observer.updateMovieList(moviesSort);
-        
     }
     
     public ArrayList<String> sortList() {

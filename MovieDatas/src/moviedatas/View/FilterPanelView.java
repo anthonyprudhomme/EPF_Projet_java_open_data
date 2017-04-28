@@ -11,25 +11,38 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javafx.util.Pair;
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import moviedatas.Controller.FilterController;
 import moviedatas.Controller.MovieListController;
 import moviedatas.Model.Movie;
 
-/**
- *
- * @author anthony
- */
 public class FilterPanelView {
 //    public Pair<boolean, int> sizeF = new Pair<>();
     
     private FilterController filterPC = new FilterController();
     private ArrayList< Pair<String, ArrayList<String>> > filters = new ArrayList<>();
     
+    
+    public void initFilters() {
+        ArrayList<String> emptyFilter = new ArrayList<>();
+        emptyFilter.add("All");
+        filters.add(new Pair<>("Country",emptyFilter));
+        filters.add(new Pair<>("Language",emptyFilter));
+        filters.add(new Pair<>("Genre",emptyFilter));
+        filters.add(new Pair<>("Keywords",emptyFilter));
+        filters.add(new Pair<>("Size",emptyFilter));
+        filters.add(new Pair<>("Color",emptyFilter));
+    }
+    
     public JPanel createFilterPanel() {
+        // Initialization of filters list
+        initFilters();
+        
         // Create the global panel with all filters
         JPanel filterPanel = new JPanel();
         // The components of the panel are place verticaly
@@ -69,10 +82,22 @@ public class FilterPanelView {
                 addGlobalInformations("Genre",currentItem.getSelectedValues());
             }
         });
+        
         comboCountries.addActionListener (new ActionListener () {
             public void actionPerformed(ActionEvent e) {
-                JComboCheckBox currentItem = (JComboCheckBox) e.getSource();
-                addGlobalInformations("Country",currentItem.getSelectedValues());
+//                try {
+                    JComboCheckBox currentItem = (JComboCheckBox) e.getSource();
+                    ArrayList<String> currentValue = currentItem.getSelectedValues();
+
+//                    if (currentValue.get(0).equals("-- Countries --")) {
+//                        System.out.println("Réussi");
+//                    }
+
+                    addGlobalInformations("Country",currentValue);
+//                } catch(Exception ae) {
+//                    //addGlobalInformations("Country",currentValue);
+//                    System.out.println("Réussi");
+//                }
             }
         });
         comboLanguages.addActionListener (new ActionListener () {
@@ -194,29 +219,42 @@ public class FilterPanelView {
         // Create the panel
         JPanel colorPanel = new JPanel();
         
-        // Create 2 CheckBox for color & no color
-        JCheckBox color = new JCheckBox("Color");
-        JCheckBox noColor = new JCheckBox("B&W");
+        // Create 2 radio buttons for color & no color
+        JRadioButton colorButton = new JRadioButton("Color");
+        colorButton.setSelected(true);
         
-//        color.addActionListener (new ActionListener () {
-//            public void actionPerformed(ActionEvent e) {
-//                JCheckBox currentItem = (JCheckBox) e.getSource();
-//                addGlobalInformations("Color",(String)Boolean.toString(currentItem.isSelected()));
-//            }
-//        });
-//        
-//        noColor.addActionListener (new ActionListener () {
-//            public void actionPerformed(ActionEvent e) {
-//                JCheckBox currentItem = (JCheckBox) e.getSource();
-//                addGlobalInformations("Color",(String)Boolean.toString(currentItem.isSelected()));
-//            }
-//        });
+        JRadioButton nbButton = new JRadioButton("N&B");
+        
+        colorButton.addActionListener (new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // To deselecte the other radio button to have just 1 active
+                nbButton.setSelected(false);
+                
+                ArrayList<String> color = new ArrayList<>();
+                color.clear();
+                color.add("1");
+                
+                addGlobalInformations("Color", color);
+            }
+        });
+        
+        nbButton.addActionListener ((ActionEvent e) -> {
+            // To deselecte the other radio button to have just 1 active
+            colorButton.setSelected(false);
+                
+                ArrayList<String> color = new ArrayList<>();
+                color.clear();
+                color.add("0");
+                
+                addGlobalInformations("Color", color);
+        });
         
         // Add the 2 CheckBox at the panel
-        colorPanel.add(color);
-        colorPanel.add(noColor);
-        
-        
+//        colorPanel.add(color);
+//        colorPanel.add(noColor);
+        colorPanel.add(colorButton);
+        colorPanel.add(nbButton);
         
         // Return the panel
         return colorPanel;
@@ -239,7 +277,35 @@ public class FilterPanelView {
     
     private void addGlobalInformations(String nameFilter, ArrayList<String> value) {        
         Pair<String, ArrayList<String>> newFilter = new Pair<>(nameFilter, value);
-        filters.add(newFilter);
+//        filters.add(newFilter);
+
+        switch (nameFilter) {
+            case "Country":
+                filters.remove(0);
+                filters.add(0, newFilter);
+                break;
+            case "Language":
+                filters.remove(1);
+                filters.add(1, newFilter);
+                break;
+            case "Genre":
+                filters.remove(2);
+                filters.add(2, newFilter);
+                break;
+            case "Keywords":
+                filters.remove(3);
+                filters.add(3, newFilter);
+                break;
+            case "Size":
+                filters.remove(4);
+                filters.add(4, newFilter);
+                break;
+            case "Color":
+                filters.remove(5);
+                filters.add(5, newFilter);
+                break;
+        }
+
         ArrayList<Movie> filteredMovies = filterPC.listFilter(filters);
         MovieListView.observer.updateMovieList(filteredMovies);
     }

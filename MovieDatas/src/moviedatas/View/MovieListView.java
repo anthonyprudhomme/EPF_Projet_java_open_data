@@ -33,10 +33,6 @@ import moviedatas.Controller.SortControllerInterface;
 import moviedatas.Log;
 import moviedatas.Model.Movie;
 
-/**
- *
- * @author anthony
- */
 public class MovieListView implements SortControllerInterface{
     private MovieListController movieListController = new MovieListController();
     JScrollPane scrollPanel;
@@ -49,14 +45,13 @@ public class MovieListView implements SortControllerInterface{
         
         JPanel moviePanel = new JPanel();
         
-        moviePanel.setLayout(new BoxLayout(moviePanel, BoxLayout.PAGE_AXIS));
+        moviePanel.setLayout(new BoxLayout(moviePanel, BoxLayout.Y_AXIS));
         
         for (int i = 0; i < movies.size(); i++) {
             labels.add(new JLabel( movies.get(i).getTitle()));
             labels.get(i).setForeground(Color.blue);
+            
             labels.get(i).addMouseListener(new MouseAdapter() {
-                
-                
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     JLabel currentLabel = (JLabel) e.getSource();
@@ -88,7 +83,7 @@ public class MovieListView implements SortControllerInterface{
         }
         
         scrollPanel = new JScrollPane(moviePanel);
-        scrollPanel.setPreferredSize(new Dimension(150,150));
+        scrollPanel.setPreferredSize(new Dimension(600,260));
         
     }
 
@@ -96,21 +91,15 @@ public class MovieListView implements SortControllerInterface{
         
         observer = this;
         movieListViewPanel = new JPanel();
-<<<<<<< HEAD
-//        movieListViewPanel.setPreferredSize(new Dimension(500,500));
-//        movieListViewPanel.setMaximumSize(movieListViewPanel.getPreferredSize());
-=======
->>>>>>> 7fc801a976ec23d4f3ffbeb811ccb93ae6c98755
-        movieListViewPanel.setLayout(new BoxLayout(movieListViewPanel, BoxLayout.PAGE_AXIS));
         
         // Create a panel for the search bar
         JPanel searchPanel = new JPanel();
-        searchPanel.setPreferredSize(new Dimension(220,100)); // Set the preferred size
+        searchPanel.setPreferredSize(new Dimension(420,100)); // Set the preferred size
         searchPanel.setMaximumSize(searchPanel.getPreferredSize()); // Apply the maximum size
         
         // Create the search bar for movies
         JTextField searchMovie = new HintTextField("Search a movie");
-        searchMovie.setPreferredSize(new Dimension(200,75));
+        searchMovie.setPreferredSize(new Dimension(400,75));
         
         // Create a variable with all movie
         movieListController.initMovies();
@@ -162,6 +151,7 @@ public class MovieListView implements SortControllerInterface{
         movieListViewPanel.add(scrollPanel);
         movieListViewPanel.updateUI();
     }
+    
     //Class that override the textField component to add hint to it
     class HintTextField extends JTextField implements FocusListener {
 
